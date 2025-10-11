@@ -159,7 +159,7 @@ bool app_send_async_response(libn_apdu_response_t *resp) {
 }
 
 bool app_apply_state(void) {
-    if (!UX_DISPLAYED() || io_seproxyhal_spi_is_status_sent()) {
+    if (!UX_DISPLAYED()) {
         return false;
     }
 
