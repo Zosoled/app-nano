@@ -23,7 +23,7 @@
 #define P1_UNUSED 0x00
 #define P2_UNUSED 0x00
 
-uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp) {
+uint16_t libn_apdu_cache_block() {
     libn_apdu_cache_block_request_t req;
     uint8_t keyPath[MAX_BIP32_PATH_LENGTH];
     libn_private_key_t privateKey;

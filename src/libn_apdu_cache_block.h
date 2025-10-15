@@ -29,7 +29,7 @@ typedef struct {
     libn_signature_t signature;
 } libn_apdu_cache_block_request_t;
 
-uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp);
+uint16_t libn_apdu_cache_block();
 
 uint16_t libn_apdu_cache_block_output(libn_apdu_cache_block_request_t *req);
 
