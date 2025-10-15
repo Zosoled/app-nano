@@ -6,8 +6,7 @@
 
 typedef cx_blake2b_t blake2b_ctx;
 
-int blake2b_init(blake2b_ctx *ctx, size_t outlen,
-    const void *key, size_t keylen);
+int blake2b_init(blake2b_ctx *ctx, size_t outlen);
 
 void blake2b_update(blake2b_ctx *ctx,
     const void *in, size_t inlen);

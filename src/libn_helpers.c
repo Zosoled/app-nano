@@ -167,7 +167,7 @@ size_t libn_address_format(const libn_address_formatter_t *fmt,
     uint8_t check[5] = { 0, 0, 0, 0, 0 };
 
     blake2b_ctx hash;
-    blake2b_init(&hash, sizeof(check), NULL, 0);
+    blake2b_init(&hash, sizeof(check));
     blake2b_update(&hash, publicKey, sizeof(libn_public_key_t));
     blake2b_final(&hash, check);
 
@@ -375,7 +375,7 @@ void libn_hash_block(libn_hash_t blockHash,
                      const libn_block_data_t *blockData,
                      const libn_public_key_t publicKey) {
     blake2b_ctx hash;
-    blake2b_init(&hash, sizeof(libn_hash_t), NULL, 0);
+    blake2b_init(&hash, sizeof(libn_hash_t));
 
     blake2b_update(&hash, BLOCK_HASH_PREAMBLE, sizeof(BLOCK_HASH_PREAMBLE));
     blake2b_update(&hash, publicKey, sizeof(libn_public_key_t));
