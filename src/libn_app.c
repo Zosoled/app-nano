@@ -202,7 +202,7 @@ void app_init(void) {
 }
 
 void app_main(void) {
-    os_memset(libn_context_D.response.buffer, 0, 255); // paranoia
+    memset(libn_context_D.response.buffer, 0, 255); // paranoia
 
     // Process the incoming APDUs
 
@@ -212,7 +212,7 @@ void app_main(void) {
     for (;;) {
         L_DEBUG_APP(("Main Loop\n"));
 
-        // os_memset(G_io_apdu_buffer, 0, 255); // paranoia
+        // memset(G_io_apdu_buffer, 0, 255); // paranoia
 
         // receive the whole apdu using the 7 bytes headers (ledger transport)
         libn_context_D.inLength =

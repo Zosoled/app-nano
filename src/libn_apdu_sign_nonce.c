@@ -62,7 +62,7 @@ uint16_t libn_apdu_sign_nonce(libn_apdu_response_t *resp) {
     inPtr += readLen;
 
     uint16_t statusWord = libn_apdu_sign_nonce_output(resp, &req);
-    os_memset(&req, 0, sizeof(req)); // sanitise request data
+    memset(&req, 0, sizeof(req)); // sanitise request data
     return statusWord;
 }
 
@@ -75,7 +75,7 @@ uint16_t libn_apdu_sign_nonce_output(libn_apdu_response_t *resp, libn_apdu_sign_
     // Derive key and sign the block
     libn_derive_keypair(req->keyPath, privateKey, publicKey);
     libn_sign_nonce(signature, req->nonce, privateKey, publicKey);
-    os_memset(privateKey, 0, sizeof(privateKey));
+    memset(privateKey, 0, sizeof(privateKey));
 
     // Output signature
     memmove(outPtr, signature, sizeof(signature));

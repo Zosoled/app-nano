@@ -83,10 +83,10 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
 
     // Derive public key for hashing
     libn_derive_keypair(req.keyPath, privateKey, req.publicKey);
-    os_memset(privateKey, 0, sizeof(privateKey)); // sanitise private key
+    memset(privateKey, 0, sizeof(privateKey)); // sanitise private key
 
     // Reset block state
-    os_memset(&block, 0, sizeof(block));
+    memset(&block, 0, sizeof(block));
 
     // Parse input data
     readLen = sizeof(block.parent);
@@ -119,13 +119,13 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
 
     } else {
         // Make sure that the parent block data is cached and available
-        if (os_memcmp(block.parent,
+        if (memcmp(block.parent,
                       libn_context_D.cachedBlock.hash,
                       sizeof(block.parent)) != 0) {
             return LIBN_SW_PARENT_BLOCK_CACHE_MISS;
         }
 
-        representativeChanged = os_memcmp(
+        representativeChanged = memcmp(
             block.representative,
             libn_context_D.cachedBlock.representative,
             sizeof(block.representative)) != 0;
@@ -133,7 +133,7 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
             memmove(req.representative, block.representative,
                 sizeof(block.representative));
         } else {
-            os_memset(req.representative, 0,
+            memset(req.representative, 0,
                 sizeof(block.representative));
         }
 
@@ -153,20 +153,20 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
         memmove(req.recipient, block.link,
             sizeof(req.recipient));
     } else {
-        os_memset(req.recipient, 0,
+        memset(req.recipient, 0,
             sizeof(req.recipient));
     }
 
     // When auto receive is enabled, skip the prompt
     if (N_libn.autoReceive && !balanceDecreased && !representativeChanged) {
         uint16_t statusWord = libn_apdu_sign_block_output(resp, &req);
-        os_memset(&req, 0, sizeof(req)); // sanitise request data
+        memset(&req, 0, sizeof(req)); // sanitise request data
         return statusWord;
     } else {
         // Update app state to confirm the address
         libn_context_D.state = LIBN_STATE_CONFIRM_SIGNATURE;
         memmove(&libn_context_D.stateData.signBlockRequest, &req, sizeof(req));
-        os_memset(&req, 0, sizeof(req)); // sanitise request data
+        memset(&req, 0, sizeof(req)); // sanitise request data
         app_apply_state();
 
         resp->ioFlags |= IO_ASYNCH_REPLY;
@@ -182,7 +182,7 @@ uint16_t libn_apdu_sign_block_output(libn_apdu_response_t *resp, libn_apdu_sign_
     // Derive key and sign the block
     libn_derive_keypair(req->keyPath, privateKey, NULL);
     libn_sign_hash(signature, req->blockHash, privateKey, req->publicKey);
-    os_memset(privateKey, 0, sizeof(privateKey));
+    memset(privateKey, 0, sizeof(privateKey));
 
     // Output block hash
     memmove(outPtr, req->blockHash, sizeof(req->blockHash));
@@ -211,6 +211,6 @@ void libn_bagl_confirm_sign_block_callback(bool confirmed) {
     } else {
         statusWord = LIBN_SW_CONDITIONS_OF_USE_NOT_SATISFIED;
     }
-    os_memset(req, 0, sizeof(req)); // sanitise request data
+    memset(req, 0, sizeof(req)); // sanitise request data
     app_async_response(&resp, statusWord);
 }

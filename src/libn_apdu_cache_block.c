@@ -64,11 +64,11 @@ uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp) {
 
     // Derive public key for hashing
     libn_derive_keypair(keyPath, privateKey, req.publicKey);
-    os_memset(privateKey, 0, sizeof(privateKey)); // sanitise private key
-    os_memset(&keyPath, 0, sizeof(keyPath));
+    memset(privateKey, 0, sizeof(privateKey)); // sanitise private key
+    memset(&keyPath, 0, sizeof(keyPath));
 
     // Reset block state
-    os_memset(&req.block, 0, sizeof(req.block));
+    memset(&req.block, 0, sizeof(req.block));
 
     // Parse input data
     readLen = sizeof(req.block.parent);
@@ -94,13 +94,13 @@ uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp) {
     libn_hash_block(req.blockHash, &req.block, req.publicKey);
 
     uint16_t statusWord = libn_apdu_cache_block_output(&req);
-    os_memset(&req, 0, sizeof(req)); // sanitise request data
+    memset(&req, 0, sizeof(req)); // sanitise request data
     return statusWord;
 }
 
 uint16_t libn_apdu_cache_block_output(libn_apdu_cache_block_request_t *req) {
     // Copy the data over to the cache
-    os_memset(&libn_context_D.cachedBlock, 0, sizeof(libn_context_D.cachedBlock));
+    memset(&libn_context_D.cachedBlock, 0, sizeof(libn_context_D.cachedBlock));
     memmove(libn_context_D.cachedBlock.representative, req->block.representative,
         sizeof(libn_context_D.cachedBlock.representative));
     memmove(libn_context_D.cachedBlock.balance, req->block.balance,

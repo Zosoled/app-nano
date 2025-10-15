@@ -254,7 +254,7 @@ void libn_amount_format(const libn_amount_formatter_t *fmt,
              + 1 /* '\0' NULL terminator */];
     libn_amount_t num;
 
-    os_memset(buf, 0, sizeof(buf));
+    memset(buf, 0, sizeof(buf));
     memmove(num, balance, sizeof(num));
 
     size_t end = sizeof(buf);
@@ -356,7 +356,7 @@ void libn_derive_keypair(uint8_t *bip32Path,
         out_privateKey, chainCode,
         (unsigned char *)LIBN_SEED_KEY, sizeof(LIBN_SEED_KEY)
     );
-    os_memset(chainCode, 0, sizeof(chainCode));
+    memset(chainCode, 0, sizeof(chainCode));
 
     if (out_publicKey != NULL) {
         ed25519_publickey(out_privateKey, out_publicKey);

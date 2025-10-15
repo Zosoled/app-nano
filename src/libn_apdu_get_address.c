@@ -70,20 +70,20 @@ uint16_t libn_apdu_get_address(libn_apdu_response_t *resp) {
 
     // Retrieve the public key for the path
     libn_derive_keypair(keyPathPtr, privateKey, req.publicKey);
-    os_memset(privateKey, 0, sizeof(privateKey)); // sanitise private key
+    memset(privateKey, 0, sizeof(privateKey)); // sanitise private key
 
     if (display) {
         // Update app state to confirm the address
         libn_context_D.state = LIBN_STATE_CONFIRM_ADDRESS;
         memmove(&libn_context_D.stateData.getAddressRequest, &req, sizeof(req));
-        os_memset(&req, 0, sizeof(req)); // sanitise request data
+        memset(&req, 0, sizeof(req)); // sanitise request data
         app_apply_state();
 
         resp->ioFlags |= IO_ASYNCH_REPLY;
         return LIBN_SW_OK;
     } else {
         uint16_t statusWord = libn_apdu_get_address_output(resp, &req);
-        os_memset(&req, 0, sizeof(req)); // sanitise request data
+        memset(&req, 0, sizeof(req)); // sanitise request data
         return statusWord;
     }
 }
@@ -121,6 +121,6 @@ void libn_bagl_display_address_callback(bool confirmed) {
     } else {
         statusWord = LIBN_SW_CONDITIONS_OF_USE_NOT_SATISFIED;
     }
-    os_memset(req, 0, sizeof(req)); // sanitise request data
+    memset(req, 0, sizeof(req)); // sanitise request data
     app_async_response(&resp, statusWord);
 }

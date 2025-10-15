@@ -85,7 +85,7 @@ void ui_write_address_truncated(const libn_address_formatter_t *fmt,
     const size_t prefixLen = addressLen - LIBN_ACCOUNT_STRING_BASE_LEN;
 
     memmove(label, buf, prefixLen + 5);
-    os_memset(label + prefixLen + 5, '.', 2);
+    memset(label + prefixLen + 5, '.', 2);
     memmove(label + prefixLen + 7, buf + addressLen - 5, 5);
     label[prefixLen+12] = '\0';
 }
@@ -97,7 +97,7 @@ void ui_write_hash_truncated(ui_truncated_hash_t label, libn_hash_t hash) {
     libn_write_hex_string(buf, hash, sizeof(libn_hash_t));
     // Truncate hash to 12345..67890 format
     memmove(label, buf, 5);
-    os_memset(label+5, '.', 2);
+    memset(label+5, '.', 2);
     memmove(label+7, buf+sizeof(buf)-5, 5);
     label[12] = '\0';
 }
@@ -245,7 +245,7 @@ void libn_bagl_idle(void) {
     UX_SET_STATUS_BAR_COLOR(COIN_COLOR_ALT_FG, COIN_COLOR_ALT_BG);
 
     // Uppercase the coin name
-    os_memset(vars.idle.appTitle, 0, sizeof(vars.idle.appTitle));
+    memset(vars.idle.appTitle, 0, sizeof(vars.idle.appTitle));
     strncpy(vars.idle.appTitle, COIN_NAME, MIN(sizeof(vars.idle.appTitle)-1, sizeof(COIN_NAME)));
     for (size_t i = 0; i < sizeof(vars.idle.appTitle); i++) {
         if (vars.idle.appTitle[i] >= 'a' && vars.idle.appTitle[i] <= 'z') {
@@ -254,7 +254,7 @@ void libn_bagl_idle(void) {
     }
 
     // Concat OPEN_LABEL_PREFIX + COIN_NAME + OPEN_LABEL_SUFFIX
-    os_memset(vars.idle.openLabel, 0, sizeof(vars.idle.openLabel));
+    memset(vars.idle.openLabel, 0, sizeof(vars.idle.openLabel));
     size_t max = sizeof(vars.idle.openLabel) - 1;
     char *ptr = vars.idle.openLabel;
 
@@ -540,7 +540,7 @@ void libn_bagl_confirm_address(void) {
     }
     libn_apdu_get_address_request_t *req = &libn_context_D.stateData.getAddressRequest;
 
-    os_memset(&vars.displayAddress, 0, sizeof(vars.displayAddress));
+    memset(&vars.displayAddress, 0, sizeof(vars.displayAddress));
     // Encode public key into an address string
     ui_write_split_address(
         &req->addressFormatter,
@@ -778,7 +778,7 @@ void libn_bagl_confirm_block(void) {
     }
     libn_apdu_sign_block_request_t *req = &libn_context_D.stateData.signBlockRequest;
 
-    os_memset(&vars.confirmSignBlock, 0, sizeof(vars.confirmSignBlock));
+    memset(&vars.confirmSignBlock, 0, sizeof(vars.confirmSignBlock));
 
     ui_write_address_truncated(
         &req->addressFormatter,
