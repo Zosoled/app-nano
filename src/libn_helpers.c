@@ -172,7 +172,7 @@ size_t libn_address_format(const libn_address_formatter_t *fmt,
     blake2b_final(&hash, check);
 
     // Write prefix
-    os_memmove(buffer, fmt->prefix, fmt->prefixLen);
+    memmove(buffer, fmt->prefix, fmt->prefixLen);
     buffer += fmt->prefixLen;
 
     // Helper macro to create a virtual array of check and publicKey variables
@@ -255,7 +255,7 @@ void libn_amount_format(const libn_amount_formatter_t *fmt,
     libn_amount_t num;
 
     os_memset(buf, 0, sizeof(buf));
-    os_memmove(num, balance, sizeof(num));
+    memmove(num, balance, sizeof(num));
 
     size_t end = sizeof(buf);
     end -= 1; // '\0' NULL terminator
@@ -314,12 +314,12 @@ void libn_amount_format(const libn_amount_formatter_t *fmt,
 
     // Append the unit
     buf[end++] = ' ';
-    os_memmove(buf + end, fmt->suffix, fmt->suffixLen);
+    memmove(buf + end, fmt->suffix, fmt->suffixLen);
     end += fmt->suffixLen;
     buf[end] = '\0';
 
     // Copy the result to the destination buffer
-    os_memmove(dest, buf + start, MIN(destLen - 1, end - start + 1));
+    memmove(dest, buf + start, MIN(destLen - 1, end - start + 1));
     dest[destLen - 1] = '\0';
 }
 
@@ -420,10 +420,10 @@ void libn_sign_nonce(libn_signature_t signature,
     uint8_t *ptr = msg;
     // Append the coin name
     len = strnlen(COIN_NAME, sizeof(COIN_NAME));
-    os_memmove(ptr, COIN_NAME, len);
+    memmove(ptr, COIN_NAME, len);
     ptr += len;
     // Apend the " Signed Nonce:\n"
-    os_memmove(ptr, NONCE_PREAMBLE, sizeof(NONCE_PREAMBLE));
+    memmove(ptr, NONCE_PREAMBLE, sizeof(NONCE_PREAMBLE));
     ptr += sizeof(NONCE_PREAMBLE);
     // Append the nonce
     libn_write_hex_string(ptr, nonce, sizeof(libn_nonce_t));

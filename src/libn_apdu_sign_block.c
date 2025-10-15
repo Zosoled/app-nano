@@ -51,7 +51,7 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
 
     inPtr = G_io_apdu_buffer + ISO_OFFSET_CDATA;
     readLen = 1 + (*inPtr) * 4;
-    os_memmove(req.keyPath, inPtr, MIN(readLen, sizeof(req.keyPath)));
+    memmove(req.keyPath, inPtr, MIN(readLen, sizeof(req.keyPath)));
     inPtr += readLen;
 
     if (os_global_pin_is_validated() != BOLOS_UX_OK) {
@@ -90,19 +90,19 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
 
     // Parse input data
     readLen = sizeof(block.parent);
-    os_memmove(block.parent, inPtr, readLen);
+    memmove(block.parent, inPtr, readLen);
     inPtr += readLen;
 
     readLen = sizeof(block.link);
-    os_memmove(block.link, inPtr, readLen);
+    memmove(block.link, inPtr, readLen);
     inPtr += readLen;
 
     readLen = sizeof(block.representative);
-    os_memmove(block.representative, inPtr, readLen);
+    memmove(block.representative, inPtr, readLen);
     inPtr += readLen;
 
     readLen = sizeof(block.balance);
-    os_memmove(block.balance, inPtr, readLen);
+    memmove(block.balance, inPtr, readLen);
     inPtr += readLen;
 
     libn_hash_block(req.blockHash, &block, req.publicKey);
@@ -111,11 +111,11 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
     bool isFirstBlock = libn_is_zero(block.parent, sizeof(block.parent));
     if (isFirstBlock) {
         representativeChanged = true;
-        os_memmove(req.representative, block.representative,
+        memmove(req.representative, block.representative,
                 sizeof(block.representative));
         // For first block the balance must have increased
         balanceDecreased = false;
-        os_memmove(req.amount, block.balance, sizeof(req.amount));
+        memmove(req.amount, block.balance, sizeof(req.amount));
 
     } else {
         // Make sure that the parent block data is cached and available
@@ -130,7 +130,7 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
             libn_context_D.cachedBlock.representative,
             sizeof(block.representative)) != 0;
         if (representativeChanged) {
-            os_memmove(req.representative, block.representative,
+            memmove(req.representative, block.representative,
                 sizeof(block.representative));
         } else {
             os_memset(req.representative, 0,
@@ -141,16 +141,16 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
             block.balance,
             libn_context_D.cachedBlock.balance) < 0;
         if (balanceDecreased) {
-            os_memmove(req.amount, libn_context_D.cachedBlock.balance, sizeof(req.amount));
+            memmove(req.amount, libn_context_D.cachedBlock.balance, sizeof(req.amount));
             libn_amount_subtract(req.amount, block.balance);
         } else {
-            os_memmove(req.amount, block.balance, sizeof(req.amount));
+            memmove(req.amount, block.balance, sizeof(req.amount));
             libn_amount_subtract(req.amount, libn_context_D.cachedBlock.balance);
         }
     }
 
     if (balanceDecreased) {
-        os_memmove(req.recipient, block.link,
+        memmove(req.recipient, block.link,
             sizeof(req.recipient));
     } else {
         os_memset(req.recipient, 0,
@@ -165,7 +165,7 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
     } else {
         // Update app state to confirm the address
         libn_context_D.state = LIBN_STATE_CONFIRM_SIGNATURE;
-        os_memmove(&libn_context_D.stateData.signBlockRequest, &req, sizeof(req));
+        memmove(&libn_context_D.stateData.signBlockRequest, &req, sizeof(req));
         os_memset(&req, 0, sizeof(req)); // sanitise request data
         app_apply_state();
 
@@ -185,11 +185,11 @@ uint16_t libn_apdu_sign_block_output(libn_apdu_response_t *resp, libn_apdu_sign_
     os_memset(privateKey, 0, sizeof(privateKey));
 
     // Output block hash
-    os_memmove(outPtr, req->blockHash, sizeof(req->blockHash));
+    memmove(outPtr, req->blockHash, sizeof(req->blockHash));
     outPtr += sizeof(req->blockHash);
 
     // Output signature
-    os_memmove(outPtr, signature, sizeof(signature));
+    memmove(outPtr, signature, sizeof(signature));
     outPtr += sizeof(signature);
 
     resp->outLength = outPtr - resp->buffer;

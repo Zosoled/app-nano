@@ -53,7 +53,7 @@ void ui_write_address_truncated(const libn_address_formatter_t *fmt,
     const size_t prefixLen = addressLen - LIBN_ACCOUNT_STRING_BASE_LEN;
 
     os_memset(label + prefixLen + 5, '.', 2);
-    os_memmove(label + prefixLen + 7, label + addressLen - 5, 5);
+    memmove(label + prefixLen + 7, label + addressLen - 5, 5);
     label[prefixLen+12] = '\0';
 }
 
@@ -68,7 +68,7 @@ void ui_write_hash_truncated(char *label, libn_hash_t hash) {
     libn_write_hex_string((uint8_t *)label, hash, sizeof(libn_hash_t));
     // Truncate hash to 12345..67890 format
     os_memset(label+5, '.', 2);
-    os_memmove(label+7, label+2*sizeof(libn_hash_t)-5, 5);
+    memmove(label+7, label+2*sizeof(libn_hash_t)-5, 5);
     label[12] = '\0';
 }
 
@@ -219,8 +219,8 @@ void libn_bagl_idle(void) {
  * Display address
  */
 UX_STEP_NOCB(
-    ux_display_address_flow_1_step, 
-    pnn, 
+    ux_display_address_flow_1_step,
+    pnn,
     {
         &C_icon_eye,
         "Confirm",
@@ -276,8 +276,8 @@ void libn_bagl_display_address(void) {
  * Confirm sign block
  */
 UX_STEP_NOCB(
-    ux_confirm_sign_block_flow_1_step, 
-    pnn, 
+    ux_confirm_sign_block_flow_1_step,
+    pnn,
     {
         &C_icon_eye,
         "Review",

@@ -50,7 +50,7 @@ uint16_t libn_apdu_sign_nonce(libn_apdu_response_t *resp) {
 
     inPtr = G_io_apdu_buffer + ISO_OFFSET_CDATA;
     readLen = 1 + (*inPtr) * 4;
-    os_memmove(req.keyPath, inPtr, MIN(readLen, sizeof(req.keyPath)));
+    memmove(req.keyPath, inPtr, MIN(readLen, sizeof(req.keyPath)));
     inPtr += readLen;
 
     if (!os_global_pin_is_validated() != BOLOS_UX_OK) {
@@ -58,7 +58,7 @@ uint16_t libn_apdu_sign_nonce(libn_apdu_response_t *resp) {
     }
 
     readLen = sizeof(req.nonce);
-    os_memmove(req.nonce, inPtr, readLen);
+    memmove(req.nonce, inPtr, readLen);
     inPtr += readLen;
 
     uint16_t statusWord = libn_apdu_sign_nonce_output(resp, &req);
@@ -78,7 +78,7 @@ uint16_t libn_apdu_sign_nonce_output(libn_apdu_response_t *resp, libn_apdu_sign_
     os_memset(privateKey, 0, sizeof(privateKey));
 
     // Output signature
-    os_memmove(outPtr, signature, sizeof(signature));
+    memmove(outPtr, signature, sizeof(signature));
     outPtr += sizeof(signature);
 
     resp->outLength = outPtr - resp->buffer;

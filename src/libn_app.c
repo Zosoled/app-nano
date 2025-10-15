@@ -137,7 +137,7 @@ void app_async_response(libn_apdu_response_t *resp, uint16_t statusWord) {
 
     // Queue up the response to be sent when convenient
     libn_context_D.state = LIBN_STATE_READY;
-    os_memmove(&libn_context_D.stateData.asyncResponse, resp, sizeof(libn_apdu_response_t));
+    memmove(&libn_context_D.stateData.asyncResponse, resp, sizeof(libn_apdu_response_t));
     app_apply_state();
 }
 

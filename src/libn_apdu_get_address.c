@@ -75,7 +75,7 @@ uint16_t libn_apdu_get_address(libn_apdu_response_t *resp) {
     if (display) {
         // Update app state to confirm the address
         libn_context_D.state = LIBN_STATE_CONFIRM_ADDRESS;
-        os_memmove(&libn_context_D.stateData.getAddressRequest, &req, sizeof(req));
+        memmove(&libn_context_D.stateData.getAddressRequest, &req, sizeof(req));
         os_memset(&req, 0, sizeof(req)); // sanitise request data
         app_apply_state();
 
@@ -94,7 +94,7 @@ uint16_t libn_apdu_get_address_output(libn_apdu_response_t *resp, libn_apdu_get_
 
     // Output raw public key
     length = sizeof(req->publicKey);
-    os_memmove(outPtr, req->publicKey, length);
+    memmove(outPtr, req->publicKey, length);
     outPtr += length;
 
     // Encode & output account address

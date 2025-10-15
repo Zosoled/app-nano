@@ -34,7 +34,7 @@
 #define COIN(type, ...)                                                       \
     case type: {                                                              \
         libn_coin_conf_t conf = __VA_ARGS__;                                  \
-        os_memmove(&libn_coin_conf_D, &conf, sizeof(libn_coin_conf_t));       \
+        memmove(&libn_coin_conf_D, &conf, sizeof(libn_coin_conf_t));       \
         return;                                                               \
     }
 

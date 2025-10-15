@@ -16,7 +16,7 @@ void ed25519_publickey(const libn_private_key_t privateKey,
     os_memset(&sdkPrivateKey, 0, sizeof(sdkPrivateKey));
 
     cx_edward_compress_point(CX_CURVE_Ed25519, sdkPublicKey.W, sdkPublicKey.W_len);
-    os_memmove(publicKey, sdkPublicKey.W+1, sizeof(libn_public_key_t));
+    memmove(publicKey, sdkPublicKey.W+1, sizeof(libn_public_key_t));
 }
 
 void ed25519_sign(const uint8_t *m, size_t mlen,
@@ -45,7 +45,7 @@ int ed25519_sign_open(const uint8_t *m, size_t mlen,
     cx_ecfp_init_public_key(CX_CURVE_Ed25519, NULL, 0, &sdkPublicKey);
 
     sdkPublicKey.W[0] = 0x02;
-    os_memmove(sdkPublicKey.W+1, publicKey, sizeof(libn_public_key_t));
+    memmove(sdkPublicKey.W+1, publicKey, sizeof(libn_public_key_t));
     cx_edward_decompress_point(CX_CURVE_Ed25519, sdkPublicKey.W, sdkPublicKey.W_len);
     sdkPublicKey.W_len = 65;
 

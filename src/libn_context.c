@@ -40,7 +40,7 @@ void libn_context_move_async_response(void) {
     // Move the async result data to sync buffer
     libn_context_D.response.outLength = resp->outLength;
     libn_context_D.response.ioFlags = resp->ioFlags;
-    os_memmove(libn_context_D.response.buffer, resp->buffer, resp->outLength);
+    memmove(libn_context_D.response.buffer, resp->buffer, resp->outLength);
 
     // Reset the asyncResponse
     resp->ioFlags = 0;

@@ -53,7 +53,7 @@ uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp) {
 
     inPtr = G_io_apdu_buffer + ISO_OFFSET_CDATA;
     readLen = 1 + (*inPtr) * 4;
-    os_memmove(keyPath, inPtr, MIN(readLen, sizeof(keyPath)));
+    memmove(keyPath, inPtr, MIN(readLen, sizeof(keyPath)));
     inPtr += readLen;
 
     if (os_global_pin_is_validated() != BOLOS_UX_OK) {
@@ -74,23 +74,23 @@ uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp) {
 
     // Parse input data
     readLen = sizeof(req.block.parent);
-    os_memmove(req.block.parent, inPtr, readLen);
+    memmove(req.block.parent, inPtr, readLen);
     inPtr += readLen;
 
     readLen = sizeof(req.block.link);
-    os_memmove(req.block.link, inPtr, readLen);
+    memmove(req.block.link, inPtr, readLen);
     inPtr += readLen;
 
     readLen = sizeof(req.block.representative);
-    os_memmove(req.block.representative, inPtr, readLen);
+    memmove(req.block.representative, inPtr, readLen);
     inPtr += readLen;
 
     readLen = sizeof(req.block.balance);
-    os_memmove(req.block.balance, inPtr, readLen);
+    memmove(req.block.balance, inPtr, readLen);
     inPtr += readLen;
 
     readLen = sizeof(req.signature);
-    os_memmove(req.signature, inPtr, readLen);
+    memmove(req.signature, inPtr, readLen);
     inPtr += readLen;
 
     libn_hash_block(req.blockHash, &req.block, req.publicKey);
@@ -103,11 +103,11 @@ uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp) {
 uint16_t libn_apdu_cache_block_output(libn_apdu_response_t *resp, libn_apdu_cache_block_request_t *req) {
     // Copy the data over to the cache
     os_memset(&libn_context_D.cachedBlock, 0, sizeof(libn_context_D.cachedBlock));
-    os_memmove(libn_context_D.cachedBlock.representative, req->block.representative,
+    memmove(libn_context_D.cachedBlock.representative, req->block.representative,
         sizeof(libn_context_D.cachedBlock.representative));
-    os_memmove(libn_context_D.cachedBlock.balance, req->block.balance,
+    memmove(libn_context_D.cachedBlock.balance, req->block.balance,
         sizeof(libn_context_D.cachedBlock.balance));
-    os_memmove(libn_context_D.cachedBlock.hash, req->blockHash,
+    memmove(libn_context_D.cachedBlock.hash, req->blockHash,
         sizeof(libn_context_D.cachedBlock.hash));
 
     return LIBN_SW_OK;
