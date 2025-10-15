@@ -21,7 +21,6 @@ void ed25519_publickey(const libn_private_key_t privateKey,
 
 void ed25519_sign(const uint8_t *m, size_t mlen,
                   const libn_private_key_t privateKey,
-                  const libn_public_key_t publicKey,
                   libn_signature_t signature) {
     cx_ecfp_private_key_t sdkPrivateKey;
     cx_ecfp_init_private_key(CX_CURVE_Ed25519,

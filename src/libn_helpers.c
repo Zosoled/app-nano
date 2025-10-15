@@ -394,7 +394,7 @@ void libn_sign_hash(libn_signature_t signature,
                     const libn_public_key_t publicKey) {
     ed25519_sign(
         hash, sizeof(libn_hash_t),
-        privateKey, publicKey,
+        privateKey,
         signature);
 }
 
@@ -432,6 +432,6 @@ void libn_sign_nonce(libn_signature_t signature,
     len = ptr - msg;
     ed25519_sign(
         msg, len,
-        privateKey, publicKey,
+        privateKey,
         signature);
 }
