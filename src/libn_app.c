@@ -141,7 +141,7 @@ void app_async_response(libn_apdu_response_t *resp, uint16_t statusWord) {
     app_apply_state();
 }
 
-bool app_send_async_response(libn_apdu_response_t *resp) {
+bool app_send_async_response() {
 #ifdef HAVE_IO_U2F
     if (G_io_apdu_state == APDU_IDLE) {
         return false;
@@ -172,7 +172,7 @@ bool app_apply_state(void) {
     // In READY state, try to return the queued asyncResponse
     if (libn_context_D.state == LIBN_STATE_READY &&
         libn_context_D.stateData.asyncResponse.outLength > 0) {
-        bool responseSent = app_send_async_response(&libn_context_D.stateData.asyncResponse);
+        bool responseSent = app_send_async_response();
         if (responseSent) {
             return true;
         }
