@@ -23,8 +23,6 @@
 #define P1_UNUSED 0x00
 #define P2_UNUSED 0x00
 
-uint16_t libn_apdu_cache_block_output(libn_apdu_response_t *resp, libn_apdu_cache_block_request_t *req);
-
 uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp) {
     libn_apdu_cache_block_request_t req;
     uint8_t keyPath[MAX_BIP32_PATH_LENGTH];
@@ -95,12 +93,12 @@ uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp) {
 
     libn_hash_block(req.blockHash, &req.block, req.publicKey);
 
-    uint16_t statusWord = libn_apdu_cache_block_output(resp, &req);
+    uint16_t statusWord = libn_apdu_cache_block_output(&req);
     os_memset(&req, 0, sizeof(req)); // sanitise request data
     return statusWord;
 }
 
-uint16_t libn_apdu_cache_block_output(libn_apdu_response_t *resp, libn_apdu_cache_block_request_t *req) {
+uint16_t libn_apdu_cache_block_output(libn_apdu_cache_block_request_t *req) {
     // Copy the data over to the cache
     os_memset(&libn_context_D.cachedBlock, 0, sizeof(libn_context_D.cachedBlock));
     memmove(libn_context_D.cachedBlock.representative, req->block.representative,

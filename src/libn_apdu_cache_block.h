@@ -31,4 +31,6 @@ typedef struct {
 
 uint16_t libn_apdu_cache_block(libn_apdu_response_t *resp);
 
+uint16_t libn_apdu_cache_block_output(libn_apdu_cache_block_request_t *req);
+
 #endif // LIBN_APDU_CACHE_BLOCK_H
