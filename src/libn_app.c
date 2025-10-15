@@ -320,6 +320,7 @@ uint8_t io_event(uint8_t channel) {
               SEPROXYHAL_TAG_STATUS_EVENT_FLAG_USB_POWERED)) {
             THROW(EXCEPTION_IO_RESET);
         }
+        __attribute__((fallthrough));
     // no break is intentional
     default:
         UX_DEFAULT_EVENT();
