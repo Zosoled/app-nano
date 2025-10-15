@@ -3,6 +3,7 @@ build
 debug
 dep
 obj
+.vscode
 src/glyphs.c
 src/glyphs.h
 customCA.key
