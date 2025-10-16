@@ -331,6 +331,7 @@ void libn_derive_keypair(uint8_t *bip32Path,
     uint8_t bip32PathLength;
     uint8_t i;
     const uint8_t bip32PrefixLength = 2;
+    cx_err_t result;
 
     bip32PathLength = bip32Path[0];
     if (bip32PathLength > MAX_BIP32_PATH) {
@@ -350,12 +351,15 @@ void libn_derive_keypair(uint8_t *bip32Path,
             THROW(INVALID_PARAMETER);
         }
     }
-    os_derive_bip32_with_seed_no_throw(
+    result = os_derive_bip32_with_seed_no_throw(
         HDW_ED25519_SLIP10, LIBN_CURVE,
         bip32PathInt, bip32PathLength,
         out_privateKey, chainCode,
         (unsigned char *)LIBN_SEED_KEY, sizeof(LIBN_SEED_KEY)
     );
+    if (result != CX_OK) {
+        THROW(result);
+    }
     memset(chainCode, 0, sizeof(chainCode));
 
     if (out_publicKey != NULL) {
