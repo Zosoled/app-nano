@@ -408,8 +408,7 @@ bool libn_verify_hash_signature(const libn_hash_t hash,
 
 void libn_sign_nonce(libn_signature_t signature,
                      const libn_nonce_t nonce,
-                     const libn_private_key_t privateKey,
-                     const libn_public_key_t publicKey) {
+                     const libn_private_key_t privateKey) {
     uint8_t msg[sizeof(COIN_NAME) +
                 sizeof(NONCE_PREAMBLE) +
                 2 * sizeof(libn_nonce_t)];
