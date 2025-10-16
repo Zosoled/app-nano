@@ -350,7 +350,7 @@ void libn_derive_keypair(uint8_t *bip32Path,
             THROW(INVALID_PARAMETER);
         }
     }
-    os_perso_derive_node_bip32_seed_key(
+    os_derive_bip32_with_seed_no_throw(
         HDW_ED25519_SLIP10, LIBN_CURVE,
         bip32PathInt, bip32PathLength,
         out_privateKey, chainCode,
