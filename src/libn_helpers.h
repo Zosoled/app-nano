@@ -63,8 +63,7 @@ void libn_hash_block(libn_hash_t blockHash,
 
 void libn_sign_hash(libn_signature_t signature,
                     const libn_hash_t hash,
-                    const libn_private_key_t privateKey,
-                    const libn_public_key_t publicKey);
+                    const libn_private_key_t privateKey);
 bool libn_verify_hash_signature(const libn_hash_t blockHash,
                                 const libn_public_key_t publicKey,
                                 const libn_signature_t signature);

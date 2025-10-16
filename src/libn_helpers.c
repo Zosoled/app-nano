@@ -390,8 +390,7 @@ void libn_hash_block(libn_hash_t blockHash,
 
 void libn_sign_hash(libn_signature_t signature,
                     const libn_hash_t hash,
-                    const libn_private_key_t privateKey,
-                    const libn_public_key_t publicKey) {
+                    const libn_private_key_t privateKey) {
     ed25519_sign(
         hash, sizeof(libn_hash_t),
         privateKey,

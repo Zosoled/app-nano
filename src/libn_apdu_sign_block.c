@@ -180,7 +180,7 @@ uint16_t libn_apdu_sign_block_output(libn_apdu_response_t *resp, libn_apdu_sign_
 
     // Derive key and sign the block
     libn_derive_keypair(req->keyPath, privateKey, NULL);
-    libn_sign_hash(signature, req->blockHash, privateKey, req->publicKey);
+    libn_sign_hash(signature, req->blockHash, privateKey);
     memset(privateKey, 0, sizeof(privateKey));
 
     // Output block hash
