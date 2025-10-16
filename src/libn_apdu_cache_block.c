@@ -89,7 +89,6 @@ uint16_t libn_apdu_cache_block() {
 
     readLen = sizeof(req.signature);
     memmove(req.signature, inPtr, readLen);
-    inPtr += readLen;
 
     libn_hash_block(req.blockHash, &req.block, req.publicKey);
 

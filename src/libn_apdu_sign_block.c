@@ -103,7 +103,6 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
 
     readLen = sizeof(block.balance);
     memmove(block.balance, inPtr, readLen);
-    inPtr += readLen;
 
     libn_hash_block(req.blockHash, &block, req.publicKey);
 
