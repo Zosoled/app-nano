@@ -38,6 +38,7 @@ void app_dispatch(void) {
     uint8_t dispatched;
     uint16_t statusWord;
     uint32_t apduHash;
+    bool apduHashSet = false;
     libn_apdu_response_t *resp = &libn_context_D.response;
 
     // nothing to reply for now
@@ -56,6 +57,7 @@ void app_dispatch(void) {
 #ifdef HAVE_IO_U2F
             if (G_io_apdu_state == APDU_U2F) {
                 apduHash = libn_simple_hash(G_io_apdu_buffer, libn_context_D.inLength);
+                apduHashSet = true;
                 if (apduHash == libn_context_D.u2fRequestHash) {
                     if (libn_context_D.state != LIBN_STATE_READY) {
                         // Request ongoing, setup a timeout
@@ -100,7 +102,9 @@ void app_dispatch(void) {
                 DISPATCHER_FUNCTIONS[dispatched]))(resp);
 
 #ifdef HAVE_IO_U2F
-            if (G_io_apdu_state == APDU_U2F && (resp->ioFlags & IO_ASYNCH_REPLY) != 0) {
+            if ((G_io_apdu_state == APDU_U2F) &&
+                (resp->ioFlags & IO_ASYNCH_REPLY != 0) &&
+                (apduHashSet)) {
                 // Setup the timeout and request details
                 libn_context_D.u2fRequestHash = apduHash;
                 libn_context_D.u2fTimeout = U2F_REQUEST_TIMEOUT;
