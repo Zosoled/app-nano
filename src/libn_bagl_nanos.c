@@ -257,18 +257,18 @@ const bagl_element_t *ui_display_address_prepro(const bagl_element_t *element) {
 
 uint32_t ui_display_address_button(uint32_t button_mask,
                                    uint32_t button_mask_counter) {
+    UNUSED(button_mask_counter);
+
     switch (button_mask) {
-    case BUTTON_EVT_RELEASED | BUTTON_LEFT:
-        libn_bagl_display_address_callback(false);
-        break;
-
-    case BUTTON_EVT_RELEASED | BUTTON_RIGHT:
-        libn_bagl_display_address_callback(true);
-        break;
-
-    // For other button combinations return early and do nothing
-    default:
-        return 0;
+        case BUTTON_EVT_RELEASED | BUTTON_LEFT:
+            libn_bagl_display_address_callback(false);
+            break;
+        case BUTTON_EVT_RELEASED | BUTTON_RIGHT:
+            libn_bagl_display_address_callback(true);
+            break;
+        // For other button combinations return early and do nothing
+        default:
+            return 0;
     }
 
     libn_bagl_idle();
@@ -463,18 +463,18 @@ const bagl_element_t *ui_confirm_sign_block_prepro(const bagl_element_t *element
 
 uint32_t ui_confirm_sign_block_button(uint32_t button_mask,
                                       uint32_t button_mask_counter) {
+    UNUSED(button_mask_counter);
+
     switch (button_mask) {
-    case BUTTON_EVT_RELEASED | BUTTON_LEFT:
-        libn_bagl_confirm_sign_block_callback(false);
-        break;
-
-    case BUTTON_EVT_RELEASED | BUTTON_RIGHT:
-        libn_bagl_confirm_sign_block_callback(true);
-        break;
-
-    // For other button combinations return early and do nothing
-    default:
-        return 0;
+        case BUTTON_EVT_RELEASED | BUTTON_LEFT:
+            libn_bagl_confirm_sign_block_callback(false);
+            break;
+        case BUTTON_EVT_RELEASED | BUTTON_RIGHT:
+            libn_bagl_confirm_sign_block_callback(true);
+            break;
+        // For other button combinations return early and do nothing
+        default:
+            return 0;
     }
 
     libn_bagl_idle();
