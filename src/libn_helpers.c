@@ -165,11 +165,11 @@ size_t libn_address_format(const libn_address_formatter_t *fmt,
                            const libn_public_key_t publicKey) {
     uint8_t k, i, c;
     uint8_t check[5] = { 0, 0, 0, 0, 0 };
+    blake2b_ctx ctx;
 
-    blake2b_ctx hash;
-    blake2b_init(&hash, sizeof(check));
-    blake2b_update(&hash, publicKey, sizeof(libn_public_key_t));
-    blake2b_final(&hash, check);
+    blake2b_init(&ctx, sizeof(check));
+    blake2b_update(&ctx, publicKey, sizeof(libn_public_key_t));
+    blake2b_final(&ctx, check);
 
     // Write prefix
     memmove(buffer, fmt->prefix, fmt->prefixLen);
@@ -375,21 +375,19 @@ uint32_t libn_simple_hash(uint8_t *data, size_t dataLen) {
     return result;
 }
 
-void libn_hash_block(libn_hash_t blockHash,
-                     const libn_block_data_t *blockData,
+void libn_hash_block(libn_hash_t hash,
+                     const libn_block_data_t *data,
                      const libn_public_key_t publicKey) {
-    blake2b_ctx hash;
-    blake2b_init(&hash, sizeof(libn_hash_t));
-
-    blake2b_update(&hash, BLOCK_HASH_PREAMBLE, sizeof(BLOCK_HASH_PREAMBLE));
-    blake2b_update(&hash, publicKey, sizeof(libn_public_key_t));
-    blake2b_update(&hash, blockData->parent, sizeof(blockData->parent));
-    blake2b_update(&hash, blockData->representative,
-        sizeof(blockData->representative));
-    blake2b_update(&hash, blockData->balance, sizeof(blockData->balance));
-    blake2b_update(&hash, blockData->link, sizeof(blockData->link));
-
-    blake2b_final(&hash, blockHash);
+    blake2b_ctx ctx;
+    
+    blake2b_init(&ctx, sizeof(libn_hash_t));
+    blake2b_update(&ctx, BLOCK_HASH_PREAMBLE, sizeof(BLOCK_HASH_PREAMBLE));
+    blake2b_update(&ctx, publicKey, sizeof(libn_public_key_t));
+    blake2b_update(&ctx, data->parent, sizeof(data->parent));
+    blake2b_update(&ctx, data->representative, sizeof(data->representative));
+    blake2b_update(&ctx, data->balance, sizeof(data->balance));
+    blake2b_update(&ctx, data->link, sizeof(data->link));
+    blake2b_final(&ctx, hash);
 }
 
 void libn_sign_hash(libn_signature_t signature,
@@ -404,9 +402,7 @@ void libn_sign_hash(libn_signature_t signature,
 bool libn_verify_hash_signature(const libn_hash_t hash,
                                 const libn_public_key_t publicKey,
                                 const libn_signature_t signature) {
-    return ed25519_sign_open(
-        hash, sizeof(libn_hash_t),
-        publicKey, signature) == 0;
+    return ed25519_sign_open(hash, sizeof(libn_hash_t), publicKey, signature);
 }
 
 void libn_sign_nonce(libn_signature_t signature,
