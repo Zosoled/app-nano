@@ -103,7 +103,7 @@ void app_dispatch(void) {
 
 #ifdef HAVE_IO_U2F
             if ((G_io_apdu_state == APDU_U2F) &&
-                (resp->ioFlags & IO_ASYNCH_REPLY != 0) &&
+                ((resp->ioFlags & IO_ASYNCH_REPLY) != 0) &&
                 (apduHashSet)) {
                 // Setup the timeout and request details
                 libn_context_D.u2fRequestHash = apduHash;
