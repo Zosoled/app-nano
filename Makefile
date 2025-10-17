@@ -22,6 +22,7 @@ ifeq (customCA.key,$(wildcard customCA.key))
     SCP_PRIVKEY=`cat customCA.key`
 endif
 include $(BOLOS_SDK)/Makefile.defines
+include $(BOLOS_SDK)/Makefile.target
 
 # Default to shared app
 ifeq ($(APP_TYPE),)
@@ -122,8 +123,6 @@ ifeq ($(TARGET_NAME),TARGET_BLUE)
 ICONNAME=blue_icon_$(COIN).gif
 else ifeq ($(TARGET_NAME),TARGET_NANOS)
 ICONNAME=nanos_icon_$(COIN).gif
-else ifeq ($(TARGET_NAME),TARGET_NANOS2)
-ICONNAME=nanos_icon_$(COIN).gif
 else
 ICONNAME=nanox_icon_$(COIN).gif
 endif
@@ -158,7 +157,7 @@ DEFINES   += APPVERSION=\"$(APPVERSION)\"
 #DEFINES   += HAVE_WEBUSB WEBUSB_URL_SIZE_B=$(shell echo -n $(WEBUSB_URL) | wc -c) WEBUSB_URL=$(shell echo -n $(WEBUSB_URL) | sed -e "s/./\\\'\0\\\',/g")
 DEFINES   += HAVE_WEBUSB WEBUSB_URL_SIZE_B=0 WEBUSB_URL=""
 
-ifneq ($(TARGET_NAME),$(filter $(TARGET_NAME),TARGET_NANOS TARGET_NANOS2))
+ifneq ($(TARGET_NAME),TARGET_NANOS)
 DEFINES       += HAVE_GLO096
 DEFINES       += HAVE_BAGL BAGL_WIDTH=128 BAGL_HEIGHT=64
 DEFINES       += HAVE_BAGL_ELLIPSIS # long label truncation feature
@@ -218,7 +217,7 @@ LDLIBS   += -lm -lgcc -lc
 # import rules to compile glyphs(/pone)
 include $(BOLOS_SDK)/Makefile.glyphs
 
-### variables processed by the common makefile.rules of the SDK to grab source files and include dirs
+# variables processed by the common makefile.rules of the SDK to grab source files and include dirs
 APP_SOURCE_PATH  += src
 SDK_SOURCE_PATH  += lib_stusb
 SDK_SOURCE_PATH  += lib_stusb_impl
@@ -238,7 +237,7 @@ delete:
 # import generic rules from the sdk
 include $(BOLOS_SDK)/Makefile.rules
 
-#add dependency on custom makefile filename
+# add dependency on custom makefile filename
 dep/%.d: %.c Makefile
 
 listvariants:
