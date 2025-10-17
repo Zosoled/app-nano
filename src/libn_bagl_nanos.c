@@ -120,6 +120,11 @@ void menu_settings_autoreceive_init(uint32_t ignored) {
                     menu_settings_autoreceive, NULL);
 }
 
+void menu_quit_app(unsigned int ignored) {
+    UNUSED(ignored);
+    os_sched_exit(0);
+}
+
 const ux_menu_entry_t menu_settings_autoreceive[] = {
     {NULL, menu_settings_autoreceive_change, 0, NULL, "No", NULL, 0, 0},
     {NULL, menu_settings_autoreceive_change, 1, NULL, "Yes", NULL, 0, 0},
@@ -139,11 +144,10 @@ const ux_menu_entry_t menu_about[] = {
     UX_MENU_END};
 
 const ux_menu_entry_t menu_main[] = {
-    {NULL, NULL, 0xBA, &C_nanos_badge_nano, "Use wallet to",
-     "view accounts", 33, 12},
+    {NULL, NULL, 0xBA, &C_nanos_badge_nano, "Use wallet to", "view accounts", 33, 12},
     {menu_settings, NULL, 0, NULL, "Settings", NULL, 0, 0},
     {menu_about, NULL, 0, NULL, "About", NULL, 0, 0},
-    {NULL, os_sched_exit, 0, &C_nanos_icon_dashboard, "Quit app", NULL, 50, 29},
+    {NULL, menu_quit_app, 0, &C_nanos_icon_dashboard, "Quit app", NULL, 50, 29},
     UX_MENU_END};
 
 void libn_bagl_idle(void) {
