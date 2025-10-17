@@ -210,6 +210,6 @@ void libn_bagl_confirm_sign_block_callback(bool confirmed) {
     } else {
         statusWord = LIBN_SW_CONDITIONS_OF_USE_NOT_SATISFIED;
     }
-    memset(req, 0, sizeof(req)); // sanitise request data
+    memset(req, 0, sizeof(*req)); // sanitise request data
     app_async_response(&resp, statusWord);
 }
