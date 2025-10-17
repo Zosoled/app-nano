@@ -122,6 +122,8 @@ ifeq ($(TARGET_NAME),TARGET_BLUE)
 ICONNAME=blue_icon_$(COIN).gif
 else ifeq ($(TARGET_NAME),TARGET_NANOS)
 ICONNAME=nanos_icon_$(COIN).gif
+else ifeq ($(TARGET_NAME),TARGET_NANOS2)
+ICONNAME=nanos_icon_$(COIN).gif
 else
 ICONNAME=nanox_icon_$(COIN).gif
 endif
@@ -156,7 +158,7 @@ DEFINES   += APPVERSION=\"$(APPVERSION)\"
 #DEFINES   += HAVE_WEBUSB WEBUSB_URL_SIZE_B=$(shell echo -n $(WEBUSB_URL) | wc -c) WEBUSB_URL=$(shell echo -n $(WEBUSB_URL) | sed -e "s/./\\\'\0\\\',/g")
 DEFINES   += HAVE_WEBUSB WEBUSB_URL_SIZE_B=0 WEBUSB_URL=""
 
-ifneq ($(TARGET_NAME),TARGET_NANOS)
+ifneq ($(TARGET_NAME),$(filter $(TARGET_NAME),TARGET_NANOS TARGET_NANOS2))
 DEFINES       += HAVE_GLO096
 DEFINES       += HAVE_BAGL BAGL_WIDTH=128 BAGL_HEIGHT=64
 DEFINES       += HAVE_BAGL_ELLIPSIS # long label truncation feature
