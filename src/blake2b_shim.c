@@ -7,7 +7,7 @@ cx_err_t blake2b_init(blake2b_ctx *ctx, size_t outlen) {
 }
 
 cx_err_t blake2b_update(blake2b_ctx *ctx, const void *in, size_t inlen) {
-    return cx_hash_no_throw(&ctx->header, 0, (void *)in, inlen, NULL, 0);
+    return cx_hash_no_throw(&ctx->header, 0, (void *) in, inlen, NULL, 0);
 }
 
 cx_err_t blake2b_final(blake2b_ctx *ctx, void *out) {

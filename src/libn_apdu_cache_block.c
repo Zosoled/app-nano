@@ -1,19 +1,19 @@
 /*******************************************************************************
-*   $NANO Wallet for Ledger Nano S & Blue
-*   (c) 2018 Mart Roosmaa
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *   $NANO Wallet for Ledger Nano S & Blue
+ *   (c) 2018 Mart Roosmaa
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 
 #include "libn_internal.h"
 #include "libn_apdu_constants.h"
@@ -31,17 +31,17 @@ uint16_t libn_apdu_cache_block() {
     uint8_t readLen;
 
     switch (G_io_apdu_buffer[ISO_OFFSET_P1]) {
-    case P1_UNUSED:
-        break;
-    default:
-        return LIBN_SW_INCORRECT_P1_P2;
+        case P1_UNUSED:
+            break;
+        default:
+            return LIBN_SW_INCORRECT_P1_P2;
     }
 
     switch (G_io_apdu_buffer[ISO_OFFSET_P2]) {
-    case P2_UNUSED:
-        break;
-    default:
-        return LIBN_SW_INCORRECT_P1_P2;
+        case P2_UNUSED:
+            break;
+        default:
+            return LIBN_SW_INCORRECT_P1_P2;
     }
 
     // Verify the minimum size
@@ -64,7 +64,7 @@ uint16_t libn_apdu_cache_block() {
 
     // Derive public key for hashing
     libn_derive_keypair(keyPath, privateKey, req.publicKey);
-    memset(privateKey, 0, sizeof(privateKey)); // sanitise private key
+    memset(privateKey, 0, sizeof(privateKey));  // sanitise private key
     memset(&keyPath, 0, sizeof(keyPath));
 
     // Reset block state
@@ -93,19 +93,22 @@ uint16_t libn_apdu_cache_block() {
     libn_hash_block(req.blockHash, &req.block, req.publicKey);
 
     uint16_t statusWord = libn_apdu_cache_block_output(&req);
-    memset(&req, 0, sizeof(req)); // sanitise request data
+    memset(&req, 0, sizeof(req));  // sanitise request data
     return statusWord;
 }
 
 uint16_t libn_apdu_cache_block_output(libn_apdu_cache_block_request_t *req) {
     // Copy the data over to the cache
     memset(&libn_context_D.cachedBlock, 0, sizeof(libn_context_D.cachedBlock));
-    memmove(libn_context_D.cachedBlock.representative, req->block.representative,
-        sizeof(libn_context_D.cachedBlock.representative));
-    memmove(libn_context_D.cachedBlock.balance, req->block.balance,
-        sizeof(libn_context_D.cachedBlock.balance));
-    memmove(libn_context_D.cachedBlock.hash, req->blockHash,
-        sizeof(libn_context_D.cachedBlock.hash));
+    memmove(libn_context_D.cachedBlock.representative,
+            req->block.representative,
+            sizeof(libn_context_D.cachedBlock.representative));
+    memmove(libn_context_D.cachedBlock.balance,
+            req->block.balance,
+            sizeof(libn_context_D.cachedBlock.balance));
+    memmove(libn_context_D.cachedBlock.hash,
+            req->blockHash,
+            sizeof(libn_context_D.cachedBlock.hash));
 
     return LIBN_SW_OK;
 }

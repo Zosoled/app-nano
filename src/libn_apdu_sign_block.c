@@ -1,19 +1,19 @@
 /*******************************************************************************
-*   $NANO Wallet for Ledger Nano S & Blue
-*   (c) 2018 Mart Roosmaa
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *   $NANO Wallet for Ledger Nano S & Blue
+ *   (c) 2018 Mart Roosmaa
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 
 #include "libn_internal.h"
 #include "libn_apdu_constants.h"
@@ -23,10 +23,11 @@
 
 #define P1_UNUSED 0x00
 
-#define P2_RECIPIENT_SECONDARY_PREFIX_FLAG 0x01
+#define P2_RECIPIENT_SECONDARY_PREFIX_FLAG      0x01
 #define P2_REPRESENTATIVE_SECONDARY_PREFIX_FLAG 0x02
 
-uint16_t libn_apdu_sign_block_output(libn_apdu_response_t *resp, libn_apdu_sign_block_request_t *req);
+uint16_t libn_apdu_sign_block_output(libn_apdu_response_t *resp,
+                                     libn_apdu_sign_block_request_t *req);
 
 uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
     libn_apdu_sign_block_request_t req;
@@ -38,10 +39,10 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
     bool balanceDecreased;
 
     switch (G_io_apdu_buffer[ISO_OFFSET_P1]) {
-    case P1_UNUSED:
-        break;
-    default:
-        return LIBN_SW_INCORRECT_P1_P2;
+        case P1_UNUSED:
+            break;
+        default:
+            return LIBN_SW_INCORRECT_P1_P2;
     }
 
     // Verify the minimum size
@@ -83,7 +84,7 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
 
     // Derive public key for hashing
     libn_derive_keypair(req.keyPath, privateKey, req.publicKey);
-    memset(privateKey, 0, sizeof(privateKey)); // sanitise private key
+    memset(privateKey, 0, sizeof(privateKey));  // sanitise private key
 
     // Reset block state
     memset(&block, 0, sizeof(block));
@@ -110,35 +111,27 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
     bool isFirstBlock = libn_is_zero(block.parent, sizeof(block.parent));
     if (isFirstBlock) {
         representativeChanged = true;
-        memmove(req.representative, block.representative,
-                sizeof(block.representative));
+        memmove(req.representative, block.representative, sizeof(block.representative));
         // For first block the balance must have increased
         balanceDecreased = false;
         memmove(req.amount, block.balance, sizeof(req.amount));
 
     } else {
         // Make sure that the parent block data is cached and available
-        if (memcmp(block.parent,
-                      libn_context_D.cachedBlock.hash,
-                      sizeof(block.parent)) != 0) {
+        if (memcmp(block.parent, libn_context_D.cachedBlock.hash, sizeof(block.parent)) != 0) {
             return LIBN_SW_PARENT_BLOCK_CACHE_MISS;
         }
 
-        representativeChanged = memcmp(
-            block.representative,
-            libn_context_D.cachedBlock.representative,
-            sizeof(block.representative)) != 0;
+        representativeChanged = memcmp(block.representative,
+                                       libn_context_D.cachedBlock.representative,
+                                       sizeof(block.representative)) != 0;
         if (representativeChanged) {
-            memmove(req.representative, block.representative,
-                sizeof(block.representative));
+            memmove(req.representative, block.representative, sizeof(block.representative));
         } else {
-            memset(req.representative, 0,
-                sizeof(block.representative));
+            memset(req.representative, 0, sizeof(block.representative));
         }
 
-        balanceDecreased = libn_amount_cmp(
-            block.balance,
-            libn_context_D.cachedBlock.balance) < 0;
+        balanceDecreased = libn_amount_cmp(block.balance, libn_context_D.cachedBlock.balance) < 0;
         if (balanceDecreased) {
             memmove(req.amount, libn_context_D.cachedBlock.balance, sizeof(req.amount));
             libn_amount_subtract(req.amount, block.balance);
@@ -149,23 +142,21 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
     }
 
     if (balanceDecreased) {
-        memmove(req.recipient, block.link,
-            sizeof(req.recipient));
+        memmove(req.recipient, block.link, sizeof(req.recipient));
     } else {
-        memset(req.recipient, 0,
-            sizeof(req.recipient));
+        memset(req.recipient, 0, sizeof(req.recipient));
     }
 
     // When auto receive is enabled, skip the prompt
     if (N_libn.autoReceive && !balanceDecreased && !representativeChanged) {
         uint16_t statusWord = libn_apdu_sign_block_output(resp, &req);
-        memset(&req, 0, sizeof(req)); // sanitise request data
+        memset(&req, 0, sizeof(req));  // sanitise request data
         return statusWord;
     } else {
         // Update app state to confirm the address
         libn_context_D.state = LIBN_STATE_CONFIRM_SIGNATURE;
         memmove(&libn_context_D.stateData.signBlockRequest, &req, sizeof(req));
-        memset(&req, 0, sizeof(req)); // sanitise request data
+        memset(&req, 0, sizeof(req));  // sanitise request data
         app_apply_state();
 
         resp->ioFlags |= IO_ASYNCH_REPLY;
@@ -173,7 +164,8 @@ uint16_t libn_apdu_sign_block(libn_apdu_response_t *resp) {
     }
 }
 
-uint16_t libn_apdu_sign_block_output(libn_apdu_response_t *resp, libn_apdu_sign_block_request_t *req) {
+uint16_t libn_apdu_sign_block_output(libn_apdu_response_t *resp,
+                                     libn_apdu_sign_block_request_t *req) {
     libn_private_key_t privateKey;
     libn_signature_t signature;
     uint8_t *outPtr = resp->buffer;
@@ -210,6 +202,6 @@ void libn_bagl_confirm_sign_block_callback(bool confirmed) {
     } else {
         statusWord = LIBN_SW_CONDITIONS_OF_USE_NOT_SATISFIED;
     }
-    memset(req, 0, sizeof(*req)); // sanitise request data
+    memset(req, 0, sizeof(*req));  // sanitise request data
     app_async_response(&resp, statusWord);
 }
