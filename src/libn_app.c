@@ -305,10 +305,10 @@ uint16_t io_exchange_al(uint8_t channel, uint16_t tx_len) {
 }
 
 uint8_t io_event(uint8_t channel) {
-    // nothing done with the event, throw an error on the transport layer if
-    // needed
+    // nothing done with event, throw error on transport layer if needed
+    UNUSED(channel);
 
-    // can't have more than one tag in the reply, not supported yet.
+    // no more than one tag in the reply, not yet supported
     switch (G_io_seproxyhal_spi_buffer[0]) {
     case SEPROXYHAL_TAG_FINGER_EVENT:
         UX_FINGER_EVENT(G_io_seproxyhal_spi_buffer);
