@@ -32,7 +32,7 @@ REGISTER_COINS(
         .colorConfirmOverBackground = 0x3177C9,
         .colorConfirmOverForeground = 0xFFFFFF,
         .iconToggleOff = &C_blue_icon_toggle_off,
-        .iconToggleOn = &C_blue_icon_toggle_on_nano,
+        .iconToggleOn = &C_blue_icon_toggle_on,
         #endif // TARGET_BLUE
     })
     #endif
@@ -65,7 +65,7 @@ REGISTER_COINS(
         .colorConfirmOverBackground = 0xE2C400,
         .colorConfirmOverForeground = 0xE6473F,
         .iconToggleOff = &C_blue_icon_toggle_off,
-        .iconToggleOn = &C_blue_icon_toggle_on_banano,
+        .iconToggleOn = &C_blue_icon_toggle_on,
         #endif // TARGET_BLUE
     })
     #endif
@@ -98,7 +98,7 @@ REGISTER_COINS(
         .colorConfirmOverBackground = 0x3177C9,
         .colorConfirmOverForeground = 0xFFFFFF,
         .iconToggleOff = &C_blue_icon_toggle_off,
-        .iconToggleOn = &C_blue_icon_toggle_on_nos,
+        .iconToggleOn = &C_blue_icon_toggle_on,
         #endif // TARGET_BLUE
     })
     #endif
