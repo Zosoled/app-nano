@@ -1,5 +1,5 @@
 /*******************************************************************************
- *   $NANO Wallet for Ledger Nano S & Blue
+ *   Ledger App for Nano ($XNO)
  *   (c) 2018 Mart Roosmaa
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");

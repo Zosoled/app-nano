@@ -1,5 +1,5 @@
 /*******************************************************************************
- *   $NANO Wallet for Ledger Nano S & Blue
+ *   Ledger App for Nano ($XNO)
  *   (c) 2016 Ledger
  *   (c) 2018 Mart Roosmaa
  *
