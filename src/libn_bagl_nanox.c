@@ -17,19 +17,17 @@
 
 #include <string.h>
 
-#include "os.h"
-#include "os_io_seproxyhal.h"
-
 #include "glyphs.h"
+#include "io.h"
+#include "os.h"
+
 #include "coins.h"
 #include "libn_internal.h"
 #include "libn_bagl.h"
 
 #if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
 
-#define ACCOUNT_BUF_LEN             \
-    (LIBN_ACCOUNT_STRING_BASE_LEN + \
-     MAX(sizeof(COIN_PRIMARY_PREFIX), sizeof(COIN_SECONDARY_PREFIX)) + 1)
+#define ACCOUNT_BUF_LEN (LIBN_ACCOUNT_STRING_BASE_LEN + sizeof(COIN_ADDRESS_PREFIX) + 1)
 union {
     struct {
         char account[ACCOUNT_BUF_LEN];

@@ -1,6 +1,6 @@
+#include "cx.h"
 #include "ed25519.h"
 #include "os.h"
-#include "cx.h"
 
 cx_err_t ed25519_publickey(const libn_private_key_t prv, libn_public_key_t pub) {
     cx_ecfp_private_key_t sdkPrv;

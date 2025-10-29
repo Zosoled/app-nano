@@ -103,11 +103,9 @@ Returns a status word for the result.
 
 Requests a signature for the provided block data using the account at the _nᵗʰ_ BIP-32 derivation level. For all transactions after the first one for a given account, the parent must be cached prior to signing.
 
-| CLA  | INS  | P1   | P2                                               | Lc         | CData       |
-| ---- | ---- | ---- | ------------------------------------------------ | ---------- | ----------- |
-| 0xA1 | 0x04 | 0x00 | Bitwise flags:                                   | (113 + 4n) | (see below) |
-|      |      |      | - 0x01: display `xrb_` prefix for recipient      |            |             |
-|      |      |      | - 0x02: display `xrb_` prefix for representative |            |             |
+| CLA  | INS  | P1   | P2   | Lc         | CData       |
+| ---- | ---- | ---- | ---- | ---------- | ----------- |
+| 0xA1 | 0x04 | 0x00 | 0x00 | (113 + 4n) | (see below) |
 
 | CData                                | Length (bytes) |
 | ------------------------------------ | -------------- |

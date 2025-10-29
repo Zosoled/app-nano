@@ -16,28 +16,27 @@ This command returns the public key and the encoded address for the given BIP 32
 
 **Command**
 
-| *CLA* | *INS*  | *P1*                             | *P2* | *Lc* | *Le* |
-|-------|--------|----------------------------------|------|------|------|
-|   A1  |   02   |  00 : do not display the address |      |      |      |
-|       |        |  01 : display the address        |      |      |      |
+| _CLA_ | _INS_ | _P1_                            | _P2_ | _Lc_ | _Le_ |
+| ----- | ----- | ------------------------------- | ---- | ---- | ---- |
+| A1    | 02    | 00 : do not display the address |      |      |      |
+|       |       | 01 : display the address        |      |      |      |
 
 **Input data**
 
-| *Description*                                     | *Length*  |
-|---------------------------------------------------|-----------|
-| Number of BIP 32 derivations to perform (max 10)  | 1         |
-| First derivation index (big endian)               | 4         |
-| ...                                               | 4         |
-| Last derivation index (big endian)                | 4         |
+| _Description_                                    | _Length_ |
+| ------------------------------------------------ | -------- |
+| Number of BIP 32 derivations to perform (max 10) | 1        |
+| First derivation index (big endian)              | 4        |
+| ...                                              | 4        |
+| Last derivation index (big endian)               | 4        |
 
 **Output data**
 
-| *Description*                                     | *Length*  |
-|---------------------------------------------------|-----------|
-| Public key                                        | 32        |
-| Account address length                            | 1         |
-| Account address                                   | var       |
-
+| _Description_          | _Length_ |
+| ---------------------- | -------- |
+| Public key             | 32       |
+| Account address length | 1        |
+| Account address        | var      |
 
 ### Cache block
 
@@ -49,30 +48,27 @@ This command caches the frontier block in memory. The sign block command uses th
 
 **Command**
 
-| *CLA* | *INS*  | *P1* | *P2* | *Lc* | *Le* |
-|-------|--------|------|------|------|------|
-|   A1  |   03   |  00  |  00  |      |      |
-
+| _CLA_ | _INS_ | _P1_ | _P2_ | _Lc_ | _Le_ |
+| ----- | ----- | ---- | ---- | ---- | ---- |
+| A1    | 03    | 00   | 00   |      |      |
 
 **Input data**
 
-| *Description*                                      | *Length*  |
-|----------------------------------------------------|-----------|
-| Number of BIP 32 derivations to perform (max 10)   | 1         |
-| First derivation index (big endian)                | 4         |
-| ...                                                | 4         |
-| Last derivation index (big endian)                 | 4         |
-| Parent block hash                                  | 32        |
-| Link                                               | 32        |
-| Representative                                     | 32        |
-| Balance                                            | 16        |
-| Signature                                          | 64        |
-
+| _Description_                                    | _Length_ |
+| ------------------------------------------------ | -------- |
+| Number of BIP 32 derivations to perform (max 10) | 1        |
+| First derivation index (big endian)              | 4        |
+| ...                                              | 4        |
+| Last derivation index (big endian)               | 4        |
+| Parent block hash                                | 32       |
+| Link                                             | 32       |
+| Representative                                   | 32       |
+| Balance                                          | 16       |
+| Signature                                        | 64       |
 
 **Output data**
 
-*None*
-
+_None_
 
 ### Sign block
 
@@ -84,37 +80,29 @@ This command returns the signature for the provided universal block data. For no
 
 **Command**
 
-| *CLA* | *INS*  | *P1* | *P2*        | *Lc* | *Le* |
-|-------|--------|------|-------------|------|------|
-|   A1  |   04   |  00  | *see below* |      |      |
-
-The ***P2*** value can compose of the following bitwise flags:
-
-- `0x01` - Use *xrb_* prefix for recipient address (instead of the default *nano_* one) when confirming change with user
-- `0x02` - Use *xrb_* prefix for representative address (instead of the default *nano_* one) when confirming change with user
-
+| _CLA_ | _INS_ | _P1_ | _P2_ | _Lc_ | _Le_ |
+| ----- | ----- | ---- | ---- | ---- | ---- |
+| A1    | 04    | 00   | 00   |      |      |
 
 **Input data**
 
-| *Description*                                      | *Length*  |
-|----------------------------------------------------|-----------|
-| Number of BIP 32 derivations to perform (max 10)   | 1         |
-| First derivation index (big endian)                | 4         |
-| ...                                                | 4         |
-| Last derivation index (big endian)                 | 4         |
-| Parent block hash                                  | 32        |
-| Link                                               | 32        |
-| Representative                                     | 32        |
-| Balance                                            | 16        |
-
+| _Description_                                    | _Length_ |
+| ------------------------------------------------ | -------- |
+| Number of BIP 32 derivations to perform (max 10) | 1        |
+| First derivation index (big endian)              | 4        |
+| ...                                              | 4        |
+| Last derivation index (big endian)               | 4        |
+| Parent block hash                                | 32       |
+| Link                                             | 32       |
+| Representative                                   | 32       |
+| Balance                                          | 16       |
 
 **Output data**
 
-| *Description*                                      | *Length*  |
-|----------------------------------------------------|-----------|
-| Block hash                                         | 32        |
-| Signature                                          | 64        |
-
+| _Description_ | _Length_ |
+| ------------- | -------- |
+| Block hash    | 32       |
+| Signature     | 64       |
 
 ## Test and utility APDUs
 
@@ -128,24 +116,23 @@ This command returns the application configuration.
 
 **Command**
 
-| *CLA* | *INS*  | *P1*                 | *P2* | *Lc* | *Le* |
-|-------|--------|----------------------|------|------|------|
-|   A1  |   01   |  00                  |  00  |  00  |      |
+| _CLA_ | _INS_ | _P1_ | _P2_ | _Lc_ | _Le_ |
+| ----- | ----- | ---- | ---- | ---- | ---- |
+| A1    | 01    | 00   | 00   | 00   |      |
 
 **Input data**
 
-*None*
+_None_
 
 **Output data**
 
-| *Description*                                      | *Length*  |
-|----------------------------------------------------|-----------|
-| Major app version                                  | 1         |
-| Minor app version                                  | 1         |
-| Patch app version                                  | 1         |
-| Coin name length                                   | 1         |
-| Coin name                                          | var       |
-
+| _Description_     | _Length_ |
+| ----------------- | -------- |
+| Major app version | 1        |
+| Minor app version | 1        |
+| Patch app version | 1        |
+| Coin name length  | 1        |
+| Coin name         | var      |
 
 ### Sign nonce
 
@@ -157,41 +144,40 @@ This command signs a 128bit nonce and returns the signature. `"Nano Signed Nonce
 
 **Command**
 
-| *CLA* | *INS*  | *P1*                 | *P2* | *Lc* | *Le* |
-|-------|--------|----------------------|------|------|------|
-|   A1  |   05   |  00                  |  00  |      |      |
+| _CLA_ | _INS_ | _P1_ | _P2_ | _Lc_ | _Le_ |
+| ----- | ----- | ---- | ---- | ---- | ---- |
+| A1    | 05    | 00   | 00   |      |      |
 
 **Input data**
 
-| *Description*                                      | *Length*  |
-|----------------------------------------------------|-----------|
-| Number of BIP 32 derivations to perform (max 10)   | 1         |
-| First derivation index (big endian)                | 4         |
-| ...                                                | 4         |
-| Last derivation index (big endian)                 | 4         |
-| Nonce                                              | 16        |
+| _Description_                                    | _Length_ |
+| ------------------------------------------------ | -------- |
+| Number of BIP 32 derivations to perform (max 10) | 1        |
+| First derivation index (big endian)              | 4        |
+| ...                                              | 4        |
+| Last derivation index (big endian)               | 4        |
+| Nonce                                            | 16       |
 
 **Output data**
 
-| *Description*                                      | *Length*  |
-|----------------------------------------------------|-----------|
-| Signature                                          | 64        |
-
+| _Description_ | _Length_ |
+| ------------- | -------- |
+| Signature     | 64       |
 
 ## Transport protocol
 
 ### General transport description
 
-Ledger APDUs requests and responses are encapsulated using a flexible protocol allowing to fragment large payloads over different underlying transport mechanisms. 
+Ledger APDUs requests and responses are encapsulated using a flexible protocol allowing to fragment large payloads over different underlying transport mechanisms.
 
 The common transport header is defined as follows:
 
-| *Description*                                                                     | *Length* |
-|-----------------------------------------------------------------------------------|----------|
-| Communication channel ID (big endian)                                             | 2        |
-| Command tag                                                                       | 1        |
-| Packet sequence index (big endian)                                                | 2        |
-| Payload                                                                           | var      |
+| _Description_                         | _Length_ |
+| ------------------------------------- | -------- |
+| Communication channel ID (big endian) | 2        |
+| Command tag                           | 1        |
+| Packet sequence index (big endian)    | 2        |
+| Payload                               | var      |
 
 The Communication channel ID allows commands multiplexing over the same physical link. It is not used for the time being, and should be set to 0101 to avoid compatibility issues with implementations ignoring a leading 00 byte.
 
@@ -203,52 +189,52 @@ The Packet sequence index describes the current sequence for fragmented payloads
 
 APDU Command payloads are encoded as follows:
 
-| *Description*                                                                     | *Length* |
-|-----------------------------------------------------------------------------------|----------|
-| APDU length (big endian)                                                          | 2        |
-| APDU CLA                                                                          | 1        |
-| APDU INS                                                                          | 1        |
-| APDU P1                                                                           | 1        |
-| APDU P2                                                                           | 1        |
-| APDU length                                                                       | 1        |
-| Optional APDU data                                                                | var      |
+| _Description_            | _Length_ |
+| ------------------------ | -------- |
+| APDU length (big endian) | 2        |
+| APDU CLA                 | 1        |
+| APDU INS                 | 1        |
+| APDU P1                  | 1        |
+| APDU P2                  | 1        |
+| APDU length              | 1        |
+| Optional APDU data       | var      |
 
-APDU payload is encoded according to the APDU case 
+APDU payload is encoded according to the APDU case
 
-| Case Number  | *Lc* | *Le* | Case description                                          |
-|--------------|------|------|-----------------------------------------------------------|
-|   1          |  0   |  0   | No data in either direction - L is set to 00              |
-|   2          |  0   |  !0  | Input Data present, no Output Data - L is set to Lc       |
-|   3          |  !0  |  0   | Output Data present, no Input Data - L is set to Le       |
-|   4          |  !0  |  !0  | Both Input and Output Data are present - L is set to Lc   |
+| Case Number | _Lc_ | _Le_ | Case description                                        |
+| ----------- | ---- | ---- | ------------------------------------------------------- |
+| 1           | 0    | 0    | No data in either direction - L is set to 00            |
+| 2           | 0    | !0   | Input Data present, no Output Data - L is set to Lc     |
+| 3           | !0   | 0    | Output Data present, no Input Data - L is set to Le     |
+| 4           | !0   | !0   | Both Input and Output Data are present - L is set to Lc |
 
 ### APDU Response payload encoding
 
 APDU Response payloads are encoded as follows:
 
-| *Description*                                                                     | *Length* |
-|-----------------------------------------------------------------------------------|----------|
-| APDU response length (big endian)                                                 | 2        |
-| APDU response data and Status Word                                                | var      |
+| _Description_                      | _Length_ |
+| ---------------------------------- | -------- |
+| APDU response length (big endian)  | 2        |
+| APDU response data and Status Word | var      |
 
 ### USB mapping
 
 Messages are exchanged with the dongle over HID endpoints over interrupt transfers, with each chunk being 64 bytes long. The HID Report ID is ignored.
 
-## Status words 
+## Status words
 
 The following standard Status Words are returned for all APDUs - some specific Status Words can be used for specific commands and are mentioned in the command description.
 
 **Status words**
 
-|   *SW*   | *Description*                                                                 |
-|----------|-------------------------------------------------------------------------------|
-|   6700   | Incorrect length                                                              |
-|   6982   | Security status not satisfied (dongle is locked or busy with another request) |
-|   6985   | User declined the request                                                     |
-|   6A80   | Invalid input data                                                            |
-|   6A81   | Failed to verify the provided signature                                     |
-|   6A82   | Parent block data cache-miss (cache parent before sign)                    |
-|   6B00   | Incorrect parameter P1 or P2                                                  |
-|   6Fxx   | Technical problem (Internal error, please report)                             |
-|   9000   | Normal ending of the command                                                  |
+| _SW_ | _Description_                                                                 |
+| ---- | ----------------------------------------------------------------------------- |
+| 6700 | Incorrect length                                                              |
+| 6982 | Security status not satisfied (dongle is locked or busy with another request) |
+| 6985 | User declined the request                                                     |
+| 6A80 | Invalid input data                                                            |
+| 6A81 | Failed to verify the provided signature                                       |
+| 6A82 | Parent block data cache-miss (cache parent before sign)                       |
+| 6B00 | Incorrect parameter P1 or P2                                                  |
+| 6Fxx | Technical problem (Internal error, please report)                             |
+| 9000 | Normal ending of the command                                                  |

@@ -31,37 +31,7 @@
 #include "display.h"
 #include "tx_types.h"
 #include "deserialize.h"
-#include "handle_swap.h"
 #include "validate.h"
-
-// This is a smart documentation inclusion. The full documentation is available at
-// https://ledgerhq.github.io/app-exchange/
-// --8<-- [start:ui_bypass]
-#ifdef HAVE_SWAP
-static int check_and_sign_swap_tx(transaction_t *tx) {
-    if (G_swap_response_ready) {
-        // Safety against trying to make the app sign multiple TX
-        // This code should never be triggered as the app is supposed to exit after
-        // sending the signed transaction
-        PRINTF("Safety against double signing triggered\n");
-        os_sched_exit(-1);
-    } else {
-        // We will quit the app after this transaction, whether it succeeds or fails
-        PRINTF("Swap response is ready, the app will quit after the next send\n");
-        // This boolean will make the io_send_sw family instant reply +
-        // return to exchange
-        G_swap_response_ready = true;
-    }
-    if (swap_check_validity(tx->value, tx->fee, tx->to)) {
-        PRINTF("Swap response validated\n");
-        validate_transaction(true);
-    }
-    // Unreachable because swap_check_validity() returns an error to exchange app OR
-    // validate_transaction() returns a success to exchange
-    return 0;
-}
-#endif  // HAVE_SWAP
-// --8<-- [end:ui_bypass]
 
 int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
     if (chunk == 0) {  // first APDU, parse BIP32 path

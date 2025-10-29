@@ -6,23 +6,19 @@ libn_coin_conf_t libn_coin_conf_D;
 REGISTER_COINS(COIN(LIBN_COIN_TYPE_NANO,
                     {
                         .coinName = "Nano",
-                        .coinBadge = &C_nanos_badge_nano,
+                        .coinBadge = &C_app_nano_14px,
                         .bip32Prefix = {HARDENED(44), HARDENED(165)},
-                        .addressPrimaryPrefix = "nano_",
-                        .addressSecondaryPrefix = "xrb_",
-                        .addressDefaultPrefix = LIBN_PRIMARY_PREFIX,
-                        .defaultUnit = "NANO",
+                        .addressPrefix = "nano_",
+                        .defaultUnit = "nano",
                         .defaultUnitScale = 30,  // 1 nano = 10^30 raw
                     })
 
                    COIN(LIBN_COIN_TYPE_BANANO,
                         {
                             .coinName = "Banano",
-                            .coinBadge = &C_nanos_badge_banano,
+                            .coinBadge = &C_app_banano_14px,
                             .bip32Prefix = {HARDENED(44), HARDENED(198)},
-                            .addressPrimaryPrefix = "ban_",
-                            .addressSecondaryPrefix = "ban_",
-                            .addressDefaultPrefix = LIBN_PRIMARY_PREFIX,
-                            .defaultUnit = "BANANO",
-                            .defaultUnitScale = 29,  // 1 BANANO = 10^29 raw
+                            .addressPrefix = "ban_",
+                            .defaultUnit = "banano",
+                            .defaultUnitScale = 29,  // 1 banano = 10^29 raw
                         }))

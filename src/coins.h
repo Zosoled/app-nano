@@ -24,11 +24,9 @@ extern libn_coin_conf_t libn_coin_conf_D;
 
 void init_coin_config(libn_coin_type_t coin_type);
 
-#define COIN_NAME             libn_coin_conf_D.coinName
-#define COIN_BADGE            libn_coin_conf_D.coinBadge
-#define COIN_BIP32_PREFIX     libn_coin_conf_D.bip32Prefix
-#define COIN_PRIMARY_PREFIX   libn_coin_conf_D.addressPrimaryPrefix
-#define COIN_SECONDARY_PREFIX libn_coin_conf_D.addressSecondaryPrefix
-#define COIN_DEFAULT_PREFIX   libn_coin_conf_D.addressDefaultPrefix
-#define COIN_UNIT             libn_coin_conf_D.defaultUnit
-#define COIN_UNIT_SCALE       libn_coin_conf_D.defaultUnitScale
+#define COIN_NAME           libn_coin_conf_D.coinName
+#define COIN_BADGE          libn_coin_conf_D.coinBadge
+#define COIN_BIP32_PREFIX   libn_coin_conf_D.bip32Prefix
+#define COIN_ADDRESS_PREFIX libn_coin_conf_D.addressPrefix
+#define COIN_UNIT           libn_coin_conf_D.defaultUnit
+#define COIN_UNIT_SCALE     libn_coin_conf_D.defaultUnitScale

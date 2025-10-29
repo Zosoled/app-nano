@@ -16,9 +16,10 @@
  *  limitations under the License.
  ********************************************************************************/
 
+#include "io.h"
+
 #include "coins.h"
 #include "libn_internal.h"
-#include "os_io_seproxyhal.h"
 
 __attribute__((section(".boot"))) int main(int arg0) {
     // exit critical section

@@ -61,7 +61,7 @@ APP_SOURCE_PATH += src
 ICON_NANOX = icons/app_$(COIN)_14px.gif
 ICON_NANOSP = icons/app_$(COIN)_14px.gif
 ICON_STAX = icons/app_$(COIN)_32px.gif
-ICON_FLEX = icons/app_$(COIN)_40px.gif
+ICON_FLEX = icons/app_$(COIN)_40px.png
 ICON_APEX_P = icons/app_$(COIN)_32px.png
 
 # Application allowed derivation curves.

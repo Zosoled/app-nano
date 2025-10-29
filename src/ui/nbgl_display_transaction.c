@@ -20,7 +20,6 @@
 
 #include "os.h"
 #include "glyphs.h"
-#include "os_io_seproxyhal.h"
 #include "nbgl_use_case.h"
 #include "io.h"
 #include "bip32.h"

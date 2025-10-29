@@ -15,12 +15,12 @@
  *  limitations under the License.
  ********************************************************************************/
 
+#include "io.h"
 #include "os.h"
-#include "os_io_seproxyhal.h"
 
-#include "libn_internal.h"
 #include "libn_apdu_constants.h"
 #include "libn_bagl.h"
+#include "libn_internal.h"
 
 void libn_bagl_idle(void);
 void ui_ticker_event(bool uxAllowed);
@@ -191,8 +191,8 @@ void app_exit(void) {
 }
 
 // override point, but nothing more to do
-void io_seproxyhal_display(const bagl_element_t *element) {
-    io_seproxyhal_display_default((bagl_element_t *) element);
+void io_seproxyhal_display(const nbgl_element_t *element) {
+    io_seproxyhal_display_default((nbgl_element_t *) element);
 }
 
 uint16_t io_exchange_al(uint8_t channel, uint16_t tx_len) {

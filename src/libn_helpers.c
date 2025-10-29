@@ -92,22 +92,12 @@ uint32_t libn_bip32_get_component(uint8_t *path, uint8_t n) {
     return libn_read_u32(&path[1 + 4 * n], 1, 0);
 }
 
-void libn_address_formatter_for_coin(libn_address_formatter_t *fmt, libn_address_prefix_t prefix) {
-    // Default prefixes
-    switch (prefix) {
-        case LIBN_PRIMARY_PREFIX:
-            fmt->prefix = COIN_PRIMARY_PREFIX;
-            fmt->prefixLen = strnlen(COIN_PRIMARY_PREFIX, sizeof(COIN_PRIMARY_PREFIX));
-            break;
-        case LIBN_SECONDARY_PREFIX:
-            fmt->prefix = COIN_SECONDARY_PREFIX;
-            fmt->prefixLen = strnlen(COIN_SECONDARY_PREFIX, sizeof(COIN_SECONDARY_PREFIX));
-            break;
-    }
+void libn_address_formatter_for_coin(libn_address_formatter_t *fmt) {
+    fmt->prefix = COIN_ADDRESS_PREFIX;
+    fmt->prefixLen = strnlen(COIN_ADDRESS_PREFIX, sizeof(COIN_ADDRESS_PREFIX));
 }
 
 void libn_amount_formatter_for_coin(libn_amount_formatter_t *fmt) {
-    // Default prefixes
     fmt->suffix = COIN_UNIT;
     fmt->suffixLen = strnlen(COIN_UNIT, sizeof(COIN_UNIT));
     fmt->unitScale = COIN_UNIT_SCALE;

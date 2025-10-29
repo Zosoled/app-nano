@@ -50,18 +50,11 @@ typedef enum {
     LIBN_COIN_TYPE_BANANO,
 } libn_coin_type_t;
 
-typedef enum {
-    LIBN_PRIMARY_PREFIX,
-    LIBN_SECONDARY_PREFIX,
-} libn_address_prefix_t;
-
 typedef struct {
     const char coinName[10];
-    const bagl_icon_details_t *coinBadge;
+    const nbgl_icon_details_t *coinBadge;
     const uint32_t bip32Prefix[2];
-    const char addressPrimaryPrefix[6];
-    const char addressSecondaryPrefix[6];
-    const libn_address_prefix_t addressDefaultPrefix;
+    const char addressPrefix[6];
     const char defaultUnit[10];
     const uint8_t defaultUnitScale;
 } libn_coin_conf_t;
