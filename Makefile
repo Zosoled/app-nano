@@ -58,10 +58,10 @@ APP_SOURCE_PATH += src
 
 # Application icons following guidelines:
 # https://developers.ledger.com/docs/embedded-app/design-requirements/#device-icon
-ICON_NANOX = icons/$(COIN)_14px.gif
-ICON_NANOSP = icons/$(COIN)_14px.gif
-ICON_STAX = icons/$(COIN)_32px.gif
-ICON_FLEX = icons/$(COIN)_40px.gif
+ICON_NANOX = icons/app_$(COIN)_14px.gif
+ICON_NANOSP = icons/app_$(COIN)_14px.gif
+ICON_STAX = icons/app_$(COIN)_32px.gif
+ICON_FLEX = icons/app_$(COIN)_40px.gif
 ICON_APEX_P = icons/app_$(COIN)_32px.png
 
 # Application allowed derivation curves.
