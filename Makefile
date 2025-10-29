@@ -18,26 +18,18 @@
 ########################################
 #          Coin configuration          #
 ########################################
-NANO_COIN_NAME = nano
-BANANO_COIN_NAME = banano
-NOS_COIN_NAME = nos
+COIN ?= nano
 
-COIN ?= $(NANO_COIN_NAME)
-
-ifeq ($(COIN),$(NANO_COIN_NAME))
+ifeq ($(COIN),nano)
     COIN_NAME = Nano
 		COIN_PATH = "44'/165'"
     DEFINES += COIN_TYPE=LIBN_COIN_TYPE_NANO
-else ifeq ($(COIN),$(BANANO_COIN_NAME))
+else ifeq ($(COIN),banano)
     COIN_NAME = Banano
 		COIN_PATH = "44'/198'"
     DEFINES += COIN_TYPE=LIBN_COIN_TYPE_BANANO
-else ifeq ($(COIN),$(NOS_COIN_NAME))
-    COIN_NAME = NOS
-		COIN_PATH = "44'/229'"
-    DEFINES += COIN_TYPE=LIBN_COIN_TYPE_NOS
 else ifeq ($(filter clean listvariants,$(MAKECMDGOALS)),)
-    $(error unsupported COIN $(COIN); expected nano, banano, or nos)
+    $(error unsupported COIN $(COIN))
 endif
 
 ########################################
@@ -68,11 +60,9 @@ APP_SOURCE_PATH += src
 # https://developers.ledger.com/docs/embedded-app/design-requirements/#device-icon
 ICON_NANOX = icons/$(COIN)_14px.gif
 ICON_NANOSP = icons/$(COIN)_14px.gif
-ICON_NANOS = icons/$(COIN)_16px.gif
-#ICON_STAX = icons/app_boilerplate_32px.gif
-#ICON_FLEX = icons/app_boilerplate_40px.gif
-ICON_BLUE = icons/${COIN}_50px.gif
-#ICON_APEX_P = icons/app_boilerplate_32px_apex.png
+ICON_STAX = icons/$(COIN)_32px.gif
+ICON_FLEX = icons/$(COIN)_40px.gif
+ICON_APEX_P = icons/app_$(COIN)_32px.png
 
 # Application allowed derivation curves.
 # Possibles curves are: secp256k1, secp256r1, ed25519 and bls12381g1
@@ -96,7 +86,7 @@ PATH_APP_LOAD_PARAMS = $(COIN_PATH)
 #   * It must at least contains one value.
 #   * Values can be the app ticker or anything else but should be unique.
 VARIANT_PARAM = COIN
-VARIANT_VALUES = $(NANO_COIN_NAME) $(BANANO_COIN_NAME) $(NOS_COIN_NAME)
+VARIANT_VALUES = nano banano
 
 # Enabling DEBUG flag will enable PRINTF and disable optimizations
 #DEBUG = 1
@@ -138,28 +128,12 @@ ENABLE_NBGL_FOR_NANO_DEVICES = 0
 #DISABLE_DEBUG_LEDGER_ASSERT = 1
 #DISABLE_DEBUG_THROW = 1
 
-########################################
-#           Nano S (Legacy)            #
-########################################
-ifeq ($(TARGET_NAME),TARGET_NANOS)
-    DEFINES += HAVE_UX_LEGACY
-else
-    DEFINES += HAVE_UX_FLOW
-endif
-
-ifeq (customCA.key,$(wildcard customCA.key))
-    SCP_PRIVKEY=`cat customCA.key`
-endif
-
 #####################################################################
 #                               MISC                                #
 #####################################################################
 
-ifeq ($(TARGET_NAME),TARGET_BLUE)
-ICONNAME ?= $(ICON_BLUE)
-endif
-ifeq ($(TARGET_NAME),TARGET_NANOS)
-ICONNAME ?= $(ICON_NANOS)
+ifeq (customCA.key,$(wildcard customCA.key))
+    SCP_PRIVKEY=`cat customCA.key`
 endif
 
 # variables processed by the common makefile.rules of the SDK to grab source files and include dirs

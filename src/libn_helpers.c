@@ -92,31 +92,7 @@ uint32_t libn_bip32_get_component(uint8_t *path, uint8_t n) {
     return libn_read_u32(&path[1 + 4 * n], 1, 0);
 }
 
-void libn_address_formatter_for_coin(libn_address_formatter_t *fmt,
-                                     libn_address_prefix_t prefix,
-                                     uint8_t *bip32Path) {
-    // NOS multi-currency coin handling
-    if (strcmp(COIN_NAME, "NOS") == 0) {
-        uint32_t currencyComponent = libn_bip32_get_component(bip32Path, 2);
-
-#define SUBCURRENCY(CODE, PREFIX, SUFFIX, SCALE) \
-    case HARDENED((CODE)):                       \
-        fmt->prefix = (PREFIX);                  \
-        fmt->prefixLen = strlen((PREFIX));       \
-        break
-        switch (currencyComponent) {
-#include "nos_subcurrencies.h"
-            case HARDENED(0):
-                fmt->prefix = COIN_PRIMARY_PREFIX;
-                fmt->prefixLen = strnlen(COIN_PRIMARY_PREFIX, sizeof(COIN_PRIMARY_PREFIX));
-                break;
-            default:
-                THROW(INVALID_PARAMETER);
-        }
-#undef SUBCURRENCY
-        return;
-    }
-
+void libn_address_formatter_for_coin(libn_address_formatter_t *fmt, libn_address_prefix_t prefix) {
     // Default prefixes
     switch (prefix) {
         case LIBN_PRIMARY_PREFIX:
@@ -130,31 +106,7 @@ void libn_address_formatter_for_coin(libn_address_formatter_t *fmt,
     }
 }
 
-void libn_amount_formatter_for_coin(libn_amount_formatter_t *fmt, uint8_t *bip32Path) {
-    // NOS multi-currency coin handling
-    if (strcmp(COIN_NAME, "NOS") == 0) {
-        uint32_t currencyComponent = libn_bip32_get_component(bip32Path, 2);
-
-#define SUBCURRENCY(CODE, PREFIX, SUFFIX, SCALE) \
-    case HARDENED((CODE)):                       \
-        fmt->suffix = (SUFFIX);                  \
-        fmt->suffixLen = strlen((SUFFIX));       \
-        fmt->unitScale = SCALE;                  \
-        break
-        switch (currencyComponent) {
-#include "nos_subcurrencies.h"
-            case HARDENED(0):
-                fmt->suffix = COIN_UNIT;
-                fmt->suffixLen = strnlen(COIN_UNIT, sizeof(COIN_UNIT));
-                fmt->unitScale = COIN_UNIT_SCALE;
-                break;
-            default:
-                THROW(INVALID_PARAMETER);
-        }
-#undef SUBCURRENCY
-        return;
-    }
-
+void libn_amount_formatter_for_coin(libn_amount_formatter_t *fmt) {
     // Default prefixes
     fmt->suffix = COIN_UNIT;
     fmt->suffixLen = strnlen(COIN_UNIT, sizeof(COIN_UNIT));

@@ -48,7 +48,6 @@ typedef uint8_t libn_nonce_t[16];
 typedef enum {
     LIBN_COIN_TYPE_NANO,
     LIBN_COIN_TYPE_BANANO,
-    LIBN_COIN_TYPE_NOS,
 } libn_coin_type_t;
 
 typedef enum {
@@ -65,22 +64,6 @@ typedef struct {
     const libn_address_prefix_t addressDefaultPrefix;
     const char defaultUnit[10];
     const uint8_t defaultUnitScale;
-#if defined(TARGET_BLUE)
-    const uint32_t colorBackground;
-    const uint32_t colorForeground;
-    const uint32_t colorAltBackground;
-    const uint32_t colorAltForeground;
-    const uint32_t colorRejectBackground;
-    const uint32_t colorRejectForeground;
-    const uint32_t colorRejectOverBackground;
-    const uint32_t colorRejectOverForeground;
-    const uint32_t colorConfirmBackground;
-    const uint32_t colorConfirmForeground;
-    const uint32_t colorConfirmOverBackground;
-    const uint32_t colorConfirmOverForeground;
-    const bagl_icon_details_t *iconToggleOff;
-    const bagl_icon_details_t *iconToggleOn;
-#endif  // TARGET_BLUE
 } libn_coin_conf_t;
 
 typedef struct {

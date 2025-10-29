@@ -32,20 +32,3 @@ void init_coin_config(libn_coin_type_t coin_type);
 #define COIN_DEFAULT_PREFIX   libn_coin_conf_D.addressDefaultPrefix
 #define COIN_UNIT             libn_coin_conf_D.defaultUnit
 #define COIN_UNIT_SCALE       libn_coin_conf_D.defaultUnitScale
-
-#if defined(TARGET_BLUE)
-#define COIN_COLOR_BG              libn_coin_conf_D.colorBackground
-#define COIN_COLOR_FG              libn_coin_conf_D.colorForeground
-#define COIN_COLOR_ALT_BG          libn_coin_conf_D.colorAltBackground
-#define COIN_COLOR_ALT_FG          libn_coin_conf_D.colorAltForeground
-#define COIN_COLOR_REJECT_BG       libn_coin_conf_D.colorRejectBackground
-#define COIN_COLOR_REJECT_FG       libn_coin_conf_D.colorRejectForeground
-#define COIN_COLOR_REJECT_OVER_BG  libn_coin_conf_D.colorRejectOverBackground
-#define COIN_COLOR_REJECT_OVER_FG  libn_coin_conf_D.colorRejectOverForeground
-#define COIN_COLOR_CONFIRM_BG      libn_coin_conf_D.colorConfirmBackground
-#define COIN_COLOR_CONFIRM_FG      libn_coin_conf_D.colorConfirmForeground
-#define COIN_COLOR_CONFIRM_OVER_BG libn_coin_conf_D.colorConfirmOverBackground
-#define COIN_COLOR_CONFIRM_OVER_FG libn_coin_conf_D.colorConfirmOverForeground
-#define COIN_ICON_TOGGLE_OFF       libn_coin_conf_D.iconToggleOff
-#define COIN_ICON_TOGGLE_ON        libn_coin_conf_D.iconToggleOn
-#endif  // TARGET_BLUE

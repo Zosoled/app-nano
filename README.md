@@ -1,6 +1,6 @@
 # ledger-app-nano
 
-Nano ($XNO) wallet application for Ledger Nano S, Ledger Nano S+, and Ledger Blue devices.
+Nano ($XNO) wallet application for Ledger devices.
 
 ## For users
 
