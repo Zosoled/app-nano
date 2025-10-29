@@ -24,7 +24,7 @@ __attribute__((section(".boot"))) int main(int arg0) {
     // exit critical section
     __asm volatile("cpsie i");
 
-    const uint32_t* libcall_args = (uint32_t*) arg0;
+    const uint32_t *libcall_args = (uint32_t *) arg0;
 
     if (libcall_args) {
         if (libcall_args[0] != 0x100) {

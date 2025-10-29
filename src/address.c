@@ -15,14 +15,14 @@
  *  limitations under the License.
  *****************************************************************************/
 
-#include <stdint.h>   // uint*_t
-#include <stddef.h>   // size_t
 #include <stdbool.h>  // bool
+#include <stddef.h>   // size_t
+#include <stdint.h>   // uint*_t
 #include <string.h>   // memmove
 
-#include "os.h"
 #include "cx.h"
 #include "ledger_assert.h"
+#include "os.h"
 
 #include "address.h"
 
