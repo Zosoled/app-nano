@@ -16,6 +16,10 @@
  ******************************************************************************/
 #pragma once
 
+#include "glyphs.h"
+
+#include "libn_internal.h"
+
 #include "libn_types.h"
 
 #define HARDENED(x) ((x) + 0x80000000)

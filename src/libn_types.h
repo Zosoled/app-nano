@@ -51,12 +51,12 @@ typedef enum {
 } libn_coin_type_t;
 
 typedef struct {
-    const char coinName[10];
-    const nbgl_icon_details_t *coinBadge;
-    const uint32_t bip32Prefix[2];
-    const char addressPrefix[6];
-    const char defaultUnit[10];
-    const uint8_t defaultUnitScale;
+    char coinName[10];
+    nbgl_icon_details_t *coinBadge;
+    uint32_t bip32Prefix[2];
+    char addressPrefix[6];
+    char defaultUnit[10];
+    uint8_t defaultUnitScale;
 } libn_coin_conf_t;
 
 typedef struct {
