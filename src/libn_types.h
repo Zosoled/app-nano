@@ -52,7 +52,7 @@ typedef enum {
 
 typedef struct {
     char coinName[10];
-    nbgl_icon_details_t *coinBadge;
+    const nbgl_icon_details_t *coinBadge;
     uint32_t bip32Prefix[2];
     char addressPrefix[6];
     char defaultUnit[10];
