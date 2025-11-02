@@ -61,8 +61,8 @@ APP_SOURCE_PATH += src
 ICON_NANOX = icons/$(COIN)/app_boilerplate_14px.gif
 ICON_NANOSP = icons/$(COIN)/app_boilerplate_14px.gif
 ICON_STAX = icons/$(COIN)/app_boilerplate_32px.gif
-ICON_FLEX = icons/$(COIN)/app_boilerplate_40px.png
-ICON_APEX_P = icons/$(COIN)/app_boilerplate_32px.png
+ICON_FLEX = icons/$(COIN)/app_boilerplate_40px.gif
+ICON_APEX_P = icons/$(COIN)/app_boilerplate_32px_apex.png
 
 ifeq ($(TARGET_NAME),$(filter $(TARGET_NAME),TARGET_NANOX TARGET_NANOS2))
     # With the Nano NBGL Design, the Home Screen icon is the reverse of the App icon:
@@ -118,7 +118,7 @@ ENABLE_NBGL_FOR_NANO_DEVICES = 1
 ########################################
 #         NBGL custom features         #
 ########################################
-#ENABLE_NBGL_QRCODE = 1
+ENABLE_NBGL_QRCODE = 1
 #ENABLE_NBGL_KEYBOARD = 1
 #ENABLE_NBGL_KEYPAD = 1
 
@@ -135,15 +135,5 @@ ENABLE_NBGL_FOR_NANO_DEVICES = 1
 #DISABLE_STANDARD_WEBUSB = 1
 #DISABLE_DEBUG_LEDGER_ASSERT = 1
 #DISABLE_DEBUG_THROW = 1
-
-#####################################################################
-#                               MISC                                #
-#####################################################################
-
-# variables processed by the common makefile.rules of the SDK to grab source files and include dirs
-SDK_SOURCE_PATH += lib_ux
-
-# add dependency on custom makefile filename
-dep/%.d: %.c Makefile
 
 include $(BOLOS_SDK)/Makefile.standard_app
