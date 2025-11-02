@@ -22,15 +22,18 @@ COIN ?= nano
 
 ifeq ($(COIN),nano)
     COIN_NAME = Nano
-		COIN_PATH = "44'/165'"
+    COIN_PATH = "44'/165'"
     DEFINES += COIN_TYPE=LIBN_COIN_TYPE_NANO
 else ifeq ($(COIN),banano)
     COIN_NAME = Banano
-		COIN_PATH = "44'/198'"
+    COIN_PATH = "44'/198'"
     DEFINES += COIN_TYPE=LIBN_COIN_TYPE_BANANO
 else ifeq ($(filter clean listvariants,$(MAKECMDGOALS)),)
     $(error unsupported COIN $(COIN))
 endif
+
+CFLAGS += -DCOIN=$(COIN)
+
 
 ########################################
 #             Boilerplate              #
@@ -58,11 +61,11 @@ APP_SOURCE_PATH += src
 
 # Application icons following guidelines:
 # https://developers.ledger.com/docs/embedded-app/design-requirements/#device-icon
-ICON_NANOX = icons/$(COIN)/app_boilerplate_14px.gif
-ICON_NANOSP = icons/$(COIN)/app_boilerplate_14px.gif
-ICON_STAX = icons/$(COIN)/app_boilerplate_32px.gif
-ICON_FLEX = icons/$(COIN)/app_boilerplate_40px.gif
-ICON_APEX_P = icons/$(COIN)/app_boilerplate_32px_apex.png
+ICON_NANOX = icons/$(COIN)/app_icon_14px.gif
+ICON_NANOSP = icons/$(COIN)/app_icon_14px.gif
+ICON_STAX = icons/$(COIN)/app_icon_32px.gif
+ICON_FLEX = icons/$(COIN)/app_icon_40px.gif
+ICON_APEX_P = icons/$(COIN)/app_icon_32px_apex.png
 
 ifeq ($(TARGET_NAME),$(filter $(TARGET_NAME),TARGET_NANOX TARGET_NANOS2))
     # With the Nano NBGL Design, the Home Screen icon is the reverse of the App icon:
