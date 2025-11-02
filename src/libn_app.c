@@ -1,269 +1,270 @@
-/*******************************************************************************
- *   Ledger App for Nano ($XNO)
- *   (c) 2016 Ledger
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+// /*******************************************************************************
+//  *   Ledger App for Nano ($XNO)
+//  *   (c) 2016 Ledger
+//  *
+//  *  Licensed under the Apache License, Version 2.0 (the "License");
+//  *  you may not use this file except in compliance with the License.
+//  *  You may obtain a copy of the License at
+//  *
+//  *      http://www.apache.org/licenses/LICENSE-2.0
+//  *
+//  *  Unless required by applicable law or agreed to in writing, software
+//  *  distributed under the License is distributed on an "AS IS" BASIS,
+//  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  *  See the License for the specific language governing permissions and
+//  *  limitations under the License.
+//  ********************************************************************************/
 
-#include "io.h"
-#include "os.h"
+// #include "io.h"
+// #include "os.h"
 
-#include "libn_apdu_constants.h"
-#include "libn_bagl.h"
-#include "libn_internal.h"
+// #include "libn_apdu_constants.h"
+// #include "libn_bagl.h"
+// #include "libn_internal.h"
 
-void libn_bagl_idle(void);
-void ui_ticker_event(bool uxAllowed);
+// void libn_bagl_idle(void);
+// void ui_ticker_event(bool uxAllowed);
 
-void app_dispatch(void) {
-    uint8_t cla;
-    uint8_t ins;
-    uint8_t dispatched;
-    uint16_t statusWord;
-    libn_apdu_response_t *resp = &libn_context_D.response;
+// void app_dispatch(void) {
+//     uint8_t cla;
+//     uint8_t ins;
+//     uint8_t dispatched;
+//     uint16_t statusWord;
+//     libn_apdu_response_t *resp = &libn_context_D.response;
 
-    // nothing to reply for now
-    resp->outLength = 0;
-    resp->ioFlags = 0;
+//     // nothing to reply for now
+//     resp->outLength = 0;
+//     resp->ioFlags = 0;
 
-    BEGIN_TRY_L(dispatch) {
-        TRY_L(dispatch) {
-            // If halted, then notify
-            SB_CHECK(libn_context_D.halted);
-            if (SB_GET(libn_context_D.halted)) {
-                statusWord = LIBN_SW_HALTED;
-                goto sendSW;
-            }
+//     BEGIN_TRY_L(dispatch) {
+//         TRY_L(dispatch) {
+//             // If halted, then notify
+//             SB_CHECK(libn_context_D.halted);
+//             if (SB_GET(libn_context_D.halted)) {
+//                 statusWord = LIBN_SW_HALTED;
+//                 goto sendSW;
+//             }
 
-            cla = G_io_apdu_buffer[ISO_OFFSET_CLA];
-            ins = G_io_apdu_buffer[ISO_OFFSET_INS];
-            for (dispatched = 0; dispatched < DISPATCHER_APDUS; dispatched++) {
-                if ((cla == DISPATCHER_CLA[dispatched]) && (ins == DISPATCHER_INS[dispatched])) {
-                    break;
-                }
-            }
-            if (dispatched == DISPATCHER_APDUS) {
-                statusWord = LIBN_SW_INS_NOT_SUPPORTED;
-                goto sendSW;
-            }
-            if (DISPATCHER_DATA_IN[dispatched]) {
-                if (G_io_apdu_buffer[ISO_OFFSET_LC] == 0x00 || libn_context_D.inLength - 5 == 0) {
-                    statusWord = LIBN_SW_INCORRECT_LENGTH;
-                    goto sendSW;
-                }
-                // notify we need to receive data
-                // io_exchange(CHANNEL_APDU | IO_RECEIVE_DATA, 0);
-            }
-            // call the apdu handler
-            statusWord = ((apduProcessingFunction) PIC(DISPATCHER_FUNCTIONS[dispatched]))(resp);
+//             cla = G_io_apdu_buffer[ISO_OFFSET_CLA];
+//             ins = G_io_apdu_buffer[ISO_OFFSET_INS];
+//             for (dispatched = 0; dispatched < DISPATCHER_APDUS; dispatched++) {
+//                 if ((cla == DISPATCHER_CLA[dispatched]) && (ins == DISPATCHER_INS[dispatched])) {
+//                     break;
+//                 }
+//             }
+//             if (dispatched == DISPATCHER_APDUS) {
+//                 statusWord = LIBN_SW_INS_NOT_SUPPORTED;
+//                 goto sendSW;
+//             }
+//             if (DISPATCHER_DATA_IN[dispatched]) {
+//                 if (G_io_apdu_buffer[ISO_OFFSET_LC] == 0x00 || libn_context_D.inLength - 5 == 0)
+//                 {
+//                     statusWord = LIBN_SW_INCORRECT_LENGTH;
+//                     goto sendSW;
+//                 }
+//                 // notify we need to receive data
+//                 // io_exchange(CHANNEL_APDU | IO_RECEIVE_DATA, 0);
+//             }
+//             // call the apdu handler
+//             statusWord = ((apduProcessingFunction) PIC(DISPATCHER_FUNCTIONS[dispatched]))(resp);
 
-        sendSW:
-            // prepare SW after replied data
-            resp->buffer[resp->outLength] = (statusWord >> 8);
-            resp->buffer[resp->outLength + 1] = (statusWord & 0xff);
-            resp->outLength += 2;
-        }
-        CATCH_L(dispatch, EXCEPTION_IO_RESET) {
-            THROW(EXCEPTION_IO_RESET);
-        }
-        CATCH_OTHER_L(dispatch, e) {
-            // uncaught exception detected
-            resp->outLength = 2;
-            resp->buffer[0] = 0x6F;
-            resp->buffer[1] = e;
-            // we caught something suspicious
-            SB_SET(libn_context_D.halted, 1);
-        }
-        FINALLY_L(dispatch);
-    }
-    END_TRY_L(dispatch);
-}
+//         sendSW:
+//             // prepare SW after replied data
+//             resp->buffer[resp->outLength] = (statusWord >> 8);
+//             resp->buffer[resp->outLength + 1] = (statusWord & 0xff);
+//             resp->outLength += 2;
+//         }
+//         CATCH_L(dispatch, EXCEPTION_IO_RESET) {
+//             THROW(EXCEPTION_IO_RESET);
+//         }
+//         CATCH_OTHER_L(dispatch, e) {
+//             // uncaught exception detected
+//             resp->outLength = 2;
+//             resp->buffer[0] = 0x6F;
+//             resp->buffer[1] = e;
+//             // we caught something suspicious
+//             SB_SET(libn_context_D.halted, 1);
+//         }
+//         FINALLY_L(dispatch);
+//     }
+//     END_TRY_L(dispatch);
+// }
 
-void app_async_response(libn_apdu_response_t *resp, uint16_t statusWord) {
-    resp->buffer[resp->outLength] = (statusWord >> 8);
-    resp->buffer[resp->outLength + 1] = (statusWord & 0xff);
-    resp->outLength += 2;
+// void app_async_response(libn_apdu_response_t *resp, uint16_t statusWord) {
+//     resp->buffer[resp->outLength] = (statusWord >> 8);
+//     resp->buffer[resp->outLength + 1] = (statusWord & 0xff);
+//     resp->outLength += 2;
 
-    // Queue up the response to be sent when convenient
-    libn_context_D.state = LIBN_STATE_READY;
-    memmove(&libn_context_D.stateData.asyncResponse, resp, sizeof(libn_apdu_response_t));
-    app_apply_state();
-}
+//     // Queue up the response to be sent when convenient
+//     libn_context_D.state = LIBN_STATE_READY;
+//     memmove(&libn_context_D.stateData.asyncResponse, resp, sizeof(libn_apdu_response_t));
+//     app_apply_state();
+// }
 
-bool app_send_async_response() {
-    // Move the async result data to sync buffer
-    libn_context_move_async_response();
-    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, libn_context_D.response.outLength);
-    return true;
-}
+// bool app_send_async_response() {
+//     // Move the async result data to sync buffer
+//     libn_context_move_async_response();
+//     io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, libn_context_D.response.outLength);
+//     return true;
+// }
 
-bool app_apply_state(void) {
-    if (!UX_DISPLAYED()) {
-        return false;
-    }
+// bool app_apply_state(void) {
+//     if (!UX_DISPLAYED()) {
+//         return false;
+//     }
 
-    // First make sure that the UI displays the correct state
-    bool uxChanged = libn_bagl_apply_state();
-    if (uxChanged) {
-        return true;
-    }
+//     // First make sure that the UI displays the correct state
+//     bool uxChanged = libn_bagl_apply_state();
+//     if (uxChanged) {
+//         return true;
+//     }
 
-    // In READY state, try to return the queued asyncResponse
-    if (libn_context_D.state == LIBN_STATE_READY &&
-        libn_context_D.stateData.asyncResponse.outLength > 0) {
-        bool responseSent = app_send_async_response();
-        if (responseSent) {
-            return true;
-        }
-    }
+//     // In READY state, try to return the queued asyncResponse
+//     if (libn_context_D.state == LIBN_STATE_READY &&
+//         libn_context_D.stateData.asyncResponse.outLength > 0) {
+//         bool responseSent = app_send_async_response();
+//         if (responseSent) {
+//             return true;
+//         }
+//     }
 
-    // Everything seems to be in sync
-    return false;
-}
+//     // Everything seems to be in sync
+//     return false;
+// }
 
-void app_init(void) {
-    UX_INIT();
-    io_seproxyhal_init();
+// void app_init(void) {
+//     UX_INIT();
+//     io_seproxyhal_init();
 
-    libn_context_init();
+//     libn_context_init();
 
-    // deactivate usb before activating
-    USB_power(false);
-    USB_power(true);
+//     // deactivate usb before activating
+//     USB_power(false);
+//     USB_power(true);
 
-#if defined(HAVE_BLE)
-    G_io_app.plane_mode = os_setting_get(OS_SETTING_PLANEMODE, NULL, 0);
-    BLE_power(0, NULL);
-    BLE_power(1, "Nano X");
-#endif
+// #if defined(HAVE_BLE)
+//     G_io_app.plane_mode = os_setting_get(OS_SETTING_PLANEMODE, NULL, 0);
+//     BLE_power(0, NULL);
+//     BLE_power(1, "Nano X");
+// #endif
 
-    libn_bagl_idle();
-}
+//     libn_bagl_idle();
+// }
 
-void app_main(void) {
-    memset(libn_context_D.response.buffer, 0, 255);  // paranoia
+// void app_main(void) {
+//     memset(libn_context_D.response.buffer, 0, 255);  // paranoia
 
-    // Process the incoming APDUs
+//     // Process the incoming APDUs
 
-    // first exchange, no out length :) only wait the apdu
-    libn_context_D.response.outLength = 0;
-    libn_context_D.response.ioFlags = 0;
-    for (;;) {
-        L_DEBUG_APP(("Main Loop\n"));
+//     // first exchange, no out length :) only wait the apdu
+//     libn_context_D.response.outLength = 0;
+//     libn_context_D.response.ioFlags = 0;
+//     for (;;) {
+//         L_DEBUG_APP(("Main Loop\n"));
 
-        // memset(G_io_apdu_buffer, 0, 255); // paranoia
+//         // memset(G_io_apdu_buffer, 0, 255); // paranoia
 
-        // receive the whole apdu using the 7 bytes headers (ledger transport)
-        libn_context_D.inLength = io_exchange(CHANNEL_APDU | libn_context_D.response.ioFlags,
-                                              // use the previous outlength as the reply
-                                              libn_context_D.response.outLength);
+//         // receive the whole apdu using the 7 bytes headers (ledger transport)
+//         libn_context_D.inLength = io_exchange(CHANNEL_APDU | libn_context_D.response.ioFlags,
+//                                               // use the previous outlength as the reply
+//                                               libn_context_D.response.outLength);
 
-        app_dispatch();
+//         app_dispatch();
 
-        // reply during reception of next apdu
-    }
+//         // reply during reception of next apdu
+//     }
 
-    L_DEBUG_APP(("End of main loop\n"));
+//     L_DEBUG_APP(("End of main loop\n"));
 
-    // in case reached
-    reset();
-}
+//     // in case reached
+//     reset();
+// }
 
-void app_exit(void) {
-    BEGIN_TRY_L(exit) {
-        TRY_L(exit) {
-            os_sched_exit(-1);
-        }
-        FINALLY_L(exit) {
-        }
-    }
-    END_TRY_L(exit);
-}
+// void app_exit(void) {
+//     BEGIN_TRY_L(exit) {
+//         TRY_L(exit) {
+//             os_sched_exit(-1);
+//         }
+//         FINALLY_L(exit) {
+//         }
+//     }
+//     END_TRY_L(exit);
+// }
 
-// override point, but nothing more to do
-void io_seproxyhal_display(const nbgl_element_t *element) {
-    io_seproxyhal_display_default((nbgl_element_t *) element);
-}
+// // override point, but nothing more to do
+// void io_seproxyhal_display(const nbgl_element_t *element) {
+//     io_seproxyhal_display_default((nbgl_element_t *) element);
+// }
 
-uint16_t io_exchange_al(uint8_t channel, uint16_t tx_len) {
-    switch (channel & ~(IO_FLAGS)) {
-        case CHANNEL_KEYBOARD:
-            break;
+// uint16_t io_exchange_al(uint8_t channel, uint16_t tx_len) {
+//     switch (channel & ~(IO_FLAGS)) {
+//         case CHANNEL_KEYBOARD:
+//             break;
 
-        // multiplexed io exchange over a SPI channel and TLV encapsulated protocol
-        case CHANNEL_SPI:
-            if (tx_len) {
-                io_seproxyhal_spi_send(G_io_apdu_buffer, tx_len);
+//         // multiplexed io exchange over a SPI channel and TLV encapsulated protocol
+//         case CHANNEL_SPI:
+//             if (tx_len) {
+//                 io_seproxyhal_spi_send(G_io_apdu_buffer, tx_len);
 
-                if (channel & IO_RESET_AFTER_REPLIED) {
-                    reset();
-                }
-                return 0;  // nothing received from the master so far (it's a tx
-                           // transaction)
-            } else {
-                return io_seproxyhal_spi_recv(G_io_apdu_buffer, sizeof(G_io_apdu_buffer), 0);
-            }
+//                 if (channel & IO_RESET_AFTER_REPLIED) {
+//                     reset();
+//                 }
+//                 return 0;  // nothing received from the master so far (it's a tx
+//                            // transaction)
+//             } else {
+//                 return io_seproxyhal_spi_recv(G_io_apdu_buffer, sizeof(G_io_apdu_buffer), 0);
+//             }
 
-        default:
-            THROW(INVALID_PARAMETER);
-    }
-    return 0;
-}
+//         default:
+//             THROW(INVALID_PARAMETER);
+//     }
+//     return 0;
+// }
 
-uint8_t io_event(uint8_t channel) {
-    // nothing done with event, throw error on transport layer if needed
-    UNUSED(channel);
+// uint8_t io_event(uint8_t channel) {
+//     // nothing done with event, throw error on transport layer if needed
+//     UNUSED(channel);
 
-    // no more than one tag in the reply, not yet supported
-    switch (G_io_seproxyhal_spi_buffer[0]) {
-        case SEPROXYHAL_TAG_FINGER_EVENT:
-            UX_FINGER_EVENT(G_io_seproxyhal_spi_buffer);
-            break;
+//     // no more than one tag in the reply, not yet supported
+//     switch (G_io_seproxyhal_spi_buffer[0]) {
+//         case SEPROXYHAL_TAG_FINGER_EVENT:
+//             UX_FINGER_EVENT(G_io_seproxyhal_spi_buffer);
+//             break;
 
-        case SEPROXYHAL_TAG_BUTTON_PUSH_EVENT:
-            UX_BUTTON_PUSH_EVENT(G_io_seproxyhal_spi_buffer);
-            break;
+//         case SEPROXYHAL_TAG_BUTTON_PUSH_EVENT:
+//             UX_BUTTON_PUSH_EVENT(G_io_seproxyhal_spi_buffer);
+//             break;
 
-        case SEPROXYHAL_TAG_STATUS_EVENT:
-            if (G_io_apdu_media == IO_APDU_MEDIA_USB_HID &&
-                !(U4BE(G_io_seproxyhal_spi_buffer, 3) &
-                  SEPROXYHAL_TAG_STATUS_EVENT_FLAG_USB_POWERED)) {
-                THROW(EXCEPTION_IO_RESET);
-            }
-            __attribute__((fallthrough));
-        // no break is intentional
-        default:
-            UX_DEFAULT_EVENT();
-            break;
+//         case SEPROXYHAL_TAG_STATUS_EVENT:
+//             if (G_io_apdu_media == IO_APDU_MEDIA_USB_HID &&
+//                 !(U4BE(G_io_seproxyhal_spi_buffer, 3) &
+//                   SEPROXYHAL_TAG_STATUS_EVENT_FLAG_USB_POWERED)) {
+//                 THROW(EXCEPTION_IO_RESET);
+//             }
+//             __attribute__((fallthrough));
+//         // no break is intentional
+//         default:
+//             UX_DEFAULT_EVENT();
+//             break;
 
-        case SEPROXYHAL_TAG_DISPLAY_PROCESSED_EVENT:
-            UX_DISPLAYED_EVENT({ app_apply_state(); });
-            break;
+//         case SEPROXYHAL_TAG_DISPLAY_PROCESSED_EVENT:
+//             UX_DISPLAYED_EVENT({ app_apply_state(); });
+//             break;
 
-        case SEPROXYHAL_TAG_TICKER_EVENT:
-            if (app_apply_state()) {
-                // Apply caused changed, nothing else to do this cycle
-                break;
-            }
-            UX_TICKER_EVENT(G_io_seproxyhal_spi_buffer, { ui_ticker_event(UX_ALLOWED); });
-            break;
-    }
+//         case SEPROXYHAL_TAG_TICKER_EVENT:
+//             if (app_apply_state()) {
+//                 // Apply caused changed, nothing else to do this cycle
+//                 break;
+//             }
+//             UX_TICKER_EVENT(G_io_seproxyhal_spi_buffer, { ui_ticker_event(UX_ALLOWED); });
+//             break;
+//     }
 
-    // close the event if not done previously (by a display or whatever)
-    if (!io_seproxyhal_spi_is_status_sent()) {
-        io_seproxyhal_general_status();
-    }
+//     // close the event if not done previously (by a display or whatever)
+//     if (!io_seproxyhal_spi_is_status_sent()) {
+//         io_seproxyhal_general_status();
+//     }
 
-    // command has been processed, DO NOT reset the current APDU transport
-    return 1;
-}
+//     // command has been processed, DO NOT reset the current APDU transport
+//     return 1;
+// }

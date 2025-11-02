@@ -19,7 +19,7 @@
 #include <string.h>  // memset, explicit_bzero
 
 #include "os.h"
-#include "ux.h"
+// #include "ux.h"
 #include "swap.h"
 
 #include "types.h"

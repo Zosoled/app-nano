@@ -20,7 +20,7 @@
 #include <stdbool.h>
 
 #include "io.h"
-#include "ux.h"
+// #include "ux.h"
 
 typedef struct {
     /** IO flags to reply with at the end of an APDU handler */
