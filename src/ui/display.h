@@ -2,16 +2,19 @@
 
 #include <stdbool.h>  // bool
 
+#define ICON_CONCAT(a, b, c, d) a##b##c##d
+#define ICON_APP(a, b) ICON_CONCAT(C_app_, a, _, b)
+
 #if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
-#define ICON_APP_BOILERPLATE C_app_icon_14px
+#define ICON_APP_BOILERPLATE ICON_APP(COIN, 14px)
 #define ICON_APP_HOME        C_home_boilerplate_14px
 #define ICON_APP_WARNING     C_icon_warning
 #elif defined(TARGET_STAX) || defined(TARGET_FLEX)
-#define ICON_APP_BOILERPLATE C_app_icon_64px
+#define ICON_APP_BOILERPLATE ICON_APP(COIN, 64px)
 #define ICON_APP_HOME        ICON_APP_BOILERPLATE
 #define ICON_APP_WARNING     C_Warning_64px
 #elif defined(TARGET_APEX_P)
-#define ICON_APP_BOILERPLATE C_app_icon_48px
+#define ICON_APP_BOILERPLATE ICON_APP(COIN, 48px)
 #define ICON_APP_HOME        ICON_APP_BOILERPLATE
 #define ICON_APP_WARNING     LARGE_WARNING_ICON
 #endif

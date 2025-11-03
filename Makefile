@@ -61,11 +61,11 @@ APP_SOURCE_PATH += src
 
 # Application icons following guidelines:
 # https://developers.ledger.com/docs/embedded-app/design-requirements/#device-icon
-ICON_NANOX = icons/$(COIN)/app_icon_14px.gif
-ICON_NANOSP = icons/$(COIN)/app_icon_14px.gif
-ICON_STAX = icons/$(COIN)/app_icon_32px.gif
-ICON_FLEX = icons/$(COIN)/app_icon_40px.gif
-ICON_APEX_P = icons/$(COIN)/app_icon_32px_apex.png
+ICON_NANOX = icons/app_$(COIN)_14px.gif
+ICON_NANOSP = icons/app_$(COIN)_14px.gif
+ICON_STAX = icons/app_$(COIN)_32px.gif
+ICON_FLEX = icons/app_$(COIN)_40px.gif
+ICON_APEX_P = icons/app_$(COIN)_32px_apex.png
 
 ifeq ($(TARGET_NAME),$(filter $(TARGET_NAME),TARGET_NANOX TARGET_NANOS2))
     # With the Nano NBGL Design, the Home Screen icon is the reverse of the App icon:
