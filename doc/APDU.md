@@ -21,13 +21,13 @@ in the industry.
 | P1         | 1              | Instruction parameter 1 for the command                               |
 | P2         | 1              | Instruction parameter 2 for the command                               |
 | Lc         | 1              | The number of bytes of command data to follow (a value from 0 to 255) |
-| CData      | var            | Command data with `Lc` bytes                                          |
+| CData      | (varies)       | Command data with `Lc` bytes                                          |
 
 ## Response APDU
 
 | Field name | Length (bytes) | Description                                                                  |
 | ---------- | -------------- | ---------------------------------------------------------------------------- |
-| RData      | var            | Response data (can be empty)                                                 |
+| RData      | (varies)       | Response data (can be empty)                                                 |
 | SW         | 2              | Status word containing command processing status (e.g. `0x9000` for success) |
 
 ## Nano ($XNO) APDU specification
@@ -71,7 +71,7 @@ Returns the public key and encoded Nano address for the given BIP-32 derivation 
 | ------------------------------ | -------------- |
 | Public key                     | 32             |
 | Account address length (bytes) | 1              |
-| Account address                | varies         |
+| Account address                | (varies)       |
 | SW                             | 2              |
 
 ### Cache block
@@ -161,7 +161,7 @@ The common transport header is defined as follows:
 | Communication channel ID (big endian) | 2              |
 | Command tag                           | 1              |
 | Packet sequence index (big endian)    | 2              |
-| Payload                               | var            |
+| Payload                               | (varies)       |
 
 The Communication channel ID allows commands multiplexing over the same physical link. It is not used for the time being, and should be set to 0101 to avoid compatibility issues with implementations ignoring a leading 00 byte.
 
@@ -175,16 +175,34 @@ Messages are exchanged with the dongle over HID endpoints over interrupt transfe
 
 ### Status words
 
-The following standard Status Words are returned for all APDUs - some specific Status Words can be used for specific commands and are mentioned in the command description.
+The following standard Status Words are returned for Nano app APDUs; some are returned by specific commands and are described in the command documentation above.
 
 | SW   | Description                                                                   |
 | ---- | ----------------------------------------------------------------------------- |
-| 6700 | Incorrect length                                                              |
+| 6700 | Incorrect byte length of message                                              |
 | 6982 | Security status not satisfied (dongle is locked or busy with another request) |
-| 6985 | User declined the request                                                     |
 | 6A80 | Invalid input data                                                            |
 | 6A81 | Failed to verify the provided signature                                       |
-| 6A82 | Parent block data cache-miss (cache parent before sign)                       |
+| 6A82 | Parent block data cache-miss (cache parent before signing)                    |
 | 6B00 | Incorrect parameter P1 or P2                                                  |
 | 6Fxx | Technical problem (Internal error, please report)                             |
-| 9000 | Normal ending of the command                                                  |
+
+The following standard Status Words are returned for all APDUs.
+
+| SW   | SW name                    | Description                                      |
+| ---- | -------------------------- | ------------------------------------------------ |
+| 6985 | SW_DENY                    | Rejected by user                                 |
+| 6A86 | SW_WRONG_P1P2              | Either P1 or P2 is incorrect                     |
+| 6A87 | SW_WRONG_DATA_LENGTH       | Lc or minimum APDU length is incorrect           |
+| 6D00 | SW_INS_NOT_SUPPORTED       | No command exists with INS                       |
+| 6E00 | SW_CLA_NOT_SUPPORTED       | Bad CLA used for this application                |
+| B000 | SW_WRONG_RESPONSE_LENGTH   | Wrong response length (buffer size problem)      |
+| B001 | SW_DISPLAY_BIP32_PATH_FAIL | BIP32 path conversion to string failed           |
+| B002 | SW_DISPLAY_ADDRESS_FAIL    | Address conversion to string failed              |
+| B003 | SW_DISPLAY_AMOUNT_FAIL     | Amount conversion to string failed               |
+| B004 | SW_WRONG_TX_LENGTH         | Wrong raw transaction length                     |
+| B005 | SW_TX_PARSING_FAIL         | Failed to parse raw transaction                  |
+| B006 | SW_TX_HASH_FAIL            | Failed to compute hash digest of raw transaction |
+| B007 | SW_BAD_STATE               | Security issue with bad state                    |
+| B008 | SW_SIGNATURE_FAIL          | Signature of raw transaction failed              |
+| 9000 | OK                         | Success                                          |
