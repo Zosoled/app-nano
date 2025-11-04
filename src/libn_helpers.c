@@ -384,7 +384,7 @@ void libn_sign_nonce(libn_signature_t sig, const libn_nonce_t nonce, const libn_
     len = strnlen(COIN_NAME, sizeof(COIN_NAME));
     memmove(ptr, COIN_NAME, len);
     ptr += len;
-    // Apend the " Signed Nonce:\n"
+    // Append the " Signed Nonce:\n"
     memmove(ptr, NONCE_PREAMBLE, sizeof(NONCE_PREAMBLE));
     ptr += sizeof(NONCE_PREAMBLE);
     // Append the nonce
