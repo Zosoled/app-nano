@@ -38,7 +38,9 @@ void app_quit(void) {
 //  -----------------------------------------------------------
 #define SETTING_INFO_NB 3
 static const char *const INFO_TYPES[SETTING_INFO_NB] = {"Version", "Author", "Contributor"};
-static const char *const INFO_CONTENTS[SETTING_INFO_NB] = {APPVERSION, "Mart Roosma", "Chris Duncan"};
+static const char *const INFO_CONTENTS[SETTING_INFO_NB] = {APPVERSION,
+                                                           "Mart Roosma",
+                                                           "Chris Duncan"};
 
 // settings switches definitions
 enum { AUTORECEIVE_SWITCH_TOKEN = FIRST_USER_TOKEN };
@@ -53,7 +55,7 @@ static const nbgl_contentInfoList_t infoList = {
 };
 
 static uint8_t initSettingPage;
-static void review_warning_choice(bool confirm);
+static void autoreceive_warning_choice(bool confirm);
 static void controls_callback(int token, uint8_t index, int page);
 
 // settings menu definition
@@ -68,7 +70,7 @@ static const nbgl_genericContents_t settingContents = {.callbackCallNeeded = fal
                                                        .contentsList = contents,
                                                        .nbContents = SETTING_CONTENTS_NB};
 
-// callback for setting warning choice
+// callback for setting autoreceive warning choice
 static void autoreceive_warning_choice(bool confirm) {
     uint8_t switch_value;
     if (confirm) {
@@ -103,7 +105,8 @@ static void controls_callback(int token, uint8_t index, int page) {
             // Display the warning message and ask the user to confirm
             nbgl_useCaseChoice(&ICON_APP_WARNING,
                                "Auto-receive",
-                               "Inbound receivable transactions will be\nautomatically signed\nwithout user confirmation.",
+                               "Inbound receivable transactions will be\nautomatically "
+                               "signed\nwithout user confirmation.",
                                "I understand, confirm",
                                "Cancel",
                                autoreceive_warning_choice);
