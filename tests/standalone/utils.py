@@ -1,9 +1,10 @@
 from pathlib import Path
 from typing import List
 import re
-from Crypto.Hash import keccak
+from Crypto.Hash import BLAKE2b
+from hashlib import blake2b
 
-from ecdsa.curves import SECP256k1
+from ecdsa.curves import Ed25519
 from ecdsa.keys import VerifyingKey
 from ecdsa.util import sigdecode_der
 
@@ -12,11 +13,11 @@ from ecdsa.util import sigdecode_der
 def check_signature_validity(public_key: bytes, signature: bytes, message: bytes) -> bool:
     pk: VerifyingKey = VerifyingKey.from_string(
         public_key,
-        curve=SECP256k1,
-        hashfunc=None
+        curve=Ed25519,
+        hashfunc=blake2b
     )
-    # Compute message hash (keccak_256)
-    k = keccak.new(digest_bits=256)
+    # Compute message hash (BLAKE2b_256)
+    k = BLAKE2b.new(digest_bits=256)
     k.update(message)
     message_hash = k.digest()
 
